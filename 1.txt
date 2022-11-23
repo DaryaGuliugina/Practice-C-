@@ -1,0 +1,56 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct boiler {
+    string firm;
+    string color;
+    float power;
+    float volume;
+    float temperature;
+};
+
+boiler createStruct() {
+    boiler Boiler;
+    return Boiler;
+}
+
+boiler initStruct(boiler Boiler) {
+    cout << "Введите название фирмы: ";
+    getline(cin, Boiler.firm);
+    cout << "Введите цвет: ";
+    getline(cin, Boiler.color);
+    cout << "Введите мощность (кВт): ";
+    cin >> Boiler.power;
+    cout << "Введите объем (л): ";
+    cin >> Boiler.volume;
+    cout << "Введите максимальную температуру нагрева (\xB0" <<"C): ";
+    cin >> Boiler.temperature;
+    return { Boiler.firm, Boiler.color, Boiler.power, Boiler.volume, Boiler.temperature };
+}
+
+void showStruct(boiler Boiler) {
+    cout << endl;
+    cout << "Фирма: " << Boiler.firm << endl;
+    cout << "Цвет: " << Boiler.color << endl;
+    cout << "Мощность: " << Boiler.power << " кВт." << endl;
+    cout << "Объем: " << Boiler.volume << " л." << endl;
+    cout << "Температура: " << Boiler.temperature << " \xB0" << "C" << endl;
+    cout << endl;
+}
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    /*
+    Задание 1. 
+    Реализовать структуру «Бойлер» (фирма, цвет, мощность, объем, температура нагрева). 
+    Создайте экземпляр структуры и проиллюстрируйте работу с ним. 
+    Реализуйте функции ввода структуры, вывода структуры, создание ещё одного экземпляра структуры.
+    */
+
+    boiler Boiler1{ "De luxe", "white", 1.5, 50, 70 };
+    showStruct(Boiler1);
+    boiler Boiler2 = initStruct(createStruct());
+    showStruct(Boiler2);
+}

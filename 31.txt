@@ -1,0 +1,62 @@
+#include <iostream>
+using namespace std;
+
+/*
+Задание 1
+Создайте класс Complex (комплексное число) или используйте уже созданный вами класс из 17-18 урока. Создайте перегруженные
+операторы для реализации арифметических операций для
+по работе с комплексными числами (!=, ==).
+*/
+
+class Complex {
+private:
+    int realPart;
+    int imaginaryPart;
+public:
+    friend Complex operator+(const Complex& number1, const Complex& number2) {
+        return Complex(number1.realPart + number2.realPart, number1.imaginaryPart + number2.imaginaryPart);
+    }
+    friend Complex operator-(const Complex& number1, const Complex& number2) {
+        return Complex(number1.realPart - number2.realPart, number1.imaginaryPart - number2.imaginaryPart);
+    }
+    friend Complex operator*(const Complex& number1, const Complex& number2) {
+        return Complex(number1.realPart * number2.realPart + (-1) * number1.imaginaryPart * number2.imaginaryPart,
+            number1.realPart * number2.imaginaryPart + number1.imaginaryPart * number2.realPart);
+    }
+    friend bool operator==(const Complex& number1, const Complex& number2) {
+        return number1.realPart == number2.realPart && number1.imaginaryPart == number2.imaginaryPart;
+    }
+    friend bool operator!=(const Complex& number1, const Complex& number2) {
+        return !(number1.realPart == number2.realPart && number1.imaginaryPart == number2.imaginaryPart);
+    }
+    friend ostream& operator<< (ostream& output, const Complex& number)
+    {
+        if (number.imaginaryPart < 0) {
+            output << number.realPart << " - " << -(number.imaginaryPart) << "i";
+        }
+        else {
+            output << number.realPart << " + " << number.imaginaryPart << "i";
+        }
+        return output;
+    }
+    Complex(int realPart, int imaginaryPart) : realPart{ realPart }, imaginaryPart{ imaginaryPart }{}
+};
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    Complex number1(1, -1);
+    Complex number2(3, 6);
+    cout << "(" << number1 << ")" << " + " << "(" << number2 << ")" << " = " << number1 + number2 << endl;
+    cout << "(" << number1 << ")" << " - " << "(" << number2 << ")" << " = " << number1 - number2 << endl;
+    cout << "(" << number1 << ")" << " * " << "(" << number2 << ")" << " = " << number1 * number2 << endl;
+    bool equal = number1 == number2;
+    bool inequality = number1 != number2;
+    cout << "Число 1: " << number1 << endl;
+    cout << "Число 2: " << number2 << endl;
+    cout << "Оператор ==: " << endl;
+    equal == 1 ? cout << "Комплексные числа равны" << endl : cout << "Комплексные числа не равны" << endl;
+    cout << "Оператор !=: " << endl;
+    inequality == 0 ? cout << "Комплексные числа равны" << endl : cout << "Комплексные числа не равны" << endl;
+
+}

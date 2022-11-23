@@ -1,0 +1,28 @@
+#include <iostream>
+using namespace std;
+
+/*
+	Написать программу, которая реализует функцию с неограниченным количеством параметров, 
+	которая считает факториал числа.
+*/
+
+int fuctorial(int num, ...) {
+	if (num < 0) {
+		cout << "Error!" << endl;
+		return 0;
+	}
+	if (num == 1) return 1;
+	if (num == 0) return 1;
+	int* ptr = &num;
+	int res{ 1 };
+	while (*ptr) {
+		res *= *(ptr++);
+	}
+	return res;
+}
+
+int main()
+{
+	cout << "The factorial of the number 5 is " << fuctorial(5, 4, 3, 2, 1, 0) << endl;
+	cout << "The factorial of the number 8 is " << fuctorial(8, 7, 6, 5, 4, 3, 2, 1, 0) << endl;
+}

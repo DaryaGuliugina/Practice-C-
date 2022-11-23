@@ -1,0 +1,64 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+/*
+Задание 1
+Учитывая строку слов, вам нужно найти слово с наивысшим баллом.
+Каждая буква слова оценивается в баллах в соответствии с ее положением в алфавите: a = 1, b = 2, c = 3и т. д.
+Вам нужно вернуть слово с наивысшим баллом в виде строки.
+Если два слова оцениваются одинаково, верните слово, которое появляется первым в исходной строке.
+Все буквы будут строчными, и все входные данные будут действительными.
+*/
+
+int main()
+{
+	string str = "what time are we climbing up the volcano";
+	vector <string> vectorWords;
+	vector <int> vectorScore;
+	string word;
+
+	for (int i{}; i < str.size(); i++) {
+		if (str[i] == ' ') {
+			vectorWords.push_back(word);
+			word = "";
+		}
+		else {
+			word += str[i];
+		}
+	}
+	vectorWords.push_back(word);
+
+	char alphabet[26];
+	int index{};
+	for (char ch{ 'a' }; ch <= 'z'; ch++) {
+		alphabet[index] = ch;
+		index++;
+	}
+
+	int scoreWord{};
+	for (int i{}; i < vectorWords.size(); i++) {
+		for (int j{}; j < vectorWords[i].size(); j++) {
+			for (int k{}; k < 26; k++) {
+				if (vectorWords[i][j] == alphabet[k])
+					scoreWord += k + 1;
+			}
+		}
+		vectorScore.push_back(scoreWord);
+		scoreWord = 0;
+	}
+
+	string searchWord{};
+	int maxScore{};
+	for (int i{}; i < vectorScore.size(); i++) {
+		if (vectorScore[i] > maxScore)
+			maxScore = vectorScore[i];
+	}
+
+	for (int i = vectorScore.size() - 1; i >= 0; i--) {
+		if (maxScore == vectorScore[i])
+			searchWord = vectorWords[i];
+	}
+	cout << searchWord;
+}

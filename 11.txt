@@ -1,0 +1,43 @@
+#include <iostream>
+using namespace std;
+
+char character_array(int number) {
+    char symbol[] = { '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z' };
+    return symbol[number];
+}
+
+
+void conventer(int number, int numeral_system) {
+    if (number < numeral_system) {
+        cout << character_array(number);
+        return; //возвращает void, иначе начнется бесконечный цикл 
+    }
+    conventer(number / numeral_system, numeral_system); //рекурсия
+    cout << character_array(number % numeral_system); 
+    /*
+    сборка числа происходит в обратном порядке, 
+    потому что они выводятся после вызова рекурсивной функции по мере того, 
+    как функции извлекаются из стека (т.е в обратном порядке от того, в котором были помещены)
+    */
+    /*
+    ПРИМЕР 
+    Возьмем число 345 и переведем его в двоичную систему:
+    По мере того как будет осуществляться операция (number % numeral_system) и (number / numeral_system)
+    345 % 2 = 1, 172 % 2 = 0, 86 % 2 = 0, 43 % 2 = 1...
+    мы будем получать числа 1, 0, 0, 1, 1, 0, 1, 0, 1. 
+    За счет того, что рекурсия стоит перед выводом, числа соответственно выведутся как: 101011001
+    */
+}
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    int number;
+    int numeral_system;
+    cout << "Введите число: ";
+    cin >> number;
+    cout << "Введите систему счисления: ";
+    cin >> numeral_system;
+    cout << "Результат: ";
+    conventer(number, numeral_system);
+}

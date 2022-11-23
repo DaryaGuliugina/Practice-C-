@@ -1,0 +1,129 @@
+#include <iostream>
+#include <Windows.h> /*Обязательно для SetConsoleCP() и SetConsoleOutputCP()*/ 
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    SetConsoleCP(1251); /*Функции для ввода в консоль кириллицы. Для того чтобы все заработало, в свойствах консоли сменить шрифт на Lucida Console.*/ 
+    SetConsoleOutputCP(1251);
+
+    int N{ 5 };
+    char symbol{'1'};
+
+    cout << "Для отображения фигур введите буквы от а до к (рус. раскладка)" << endl;
+    cout << "Для выхода из программы введите 0" << endl;
+    while (symbol != '0') {
+
+        cout << "Введите: ";
+        cin >> symbol;
+        cout << endl;
+
+        switch (symbol) {
+        case 'а':
+            //а
+            for (int i{};i < N; i++) {
+                for (int j{};j < N; j++) {
+                    (i < j || i == j) ? cout << " * " : cout << "   ";
+                }
+                cout << endl;
+            }
+            cout << endl;
+            break;
+        case 'б':
+            //б
+            for (int i{};i < N; i++) {
+                for (int j{};j < N; j++) {
+                    (i > j || i == j) ? cout << " * " : cout << "   ";
+                }
+                cout << endl;
+            }
+            cout << endl;
+            break;
+        case 'в':
+            //в
+            for (int i{};i < N; i++) {
+                for (int j{};j < N; j++) {
+                    (i > j || i + j > N - 1) ? cout << "   " : cout << " * ";
+                }
+                cout << endl;
+            }
+            cout << endl;
+            break;
+        case 'г':
+            //г
+            for (int i{};i < N; i++) {
+                for (int j{};j < N; j++) {
+                    (i < j || i + j < N - 1) ? cout << "   " : cout << " * ";
+                }
+                cout << endl;
+            }
+            cout << endl;
+            break;
+        case 'д':
+            //д
+            for (int i{};i < N; i++) {
+                for (int j{};j < N; j++) {
+                    ((i < j&& i + j > N - 1) || (i > j && i + j < N - 1)) ? cout << "   " : cout << " * ";
+                }
+                cout << endl;
+            }
+            cout << endl;
+            break;
+        case 'е':
+            //е
+            for (int i{};i < N; i++) {
+                for (int j{};j < N; j++) {
+                    ((i > j && i + j > N - 1) || (i < j&& i + j < N - 1)) ? cout << "   " : cout << " * ";
+                }
+                cout << endl;
+            }
+            cout << endl;
+            break;
+        case 'ж':
+            //ж
+            for (int i{};i < N; i++) {
+                for (int j{};j < N; j++) {
+                    (i < j || i + j > N - 1) ? cout << "   " : cout << " * ";
+                }
+                cout << endl;
+            }
+            cout << endl;
+            break;
+        case 'з':
+            //з
+            for (int i{};i < N; i++) {
+                for (int j{};j < N; j++) {
+                    (i > j || i + j < N - 1) ? cout << "   " : cout << " * ";
+                }
+                cout << endl;
+            }
+            cout << endl;
+            break;
+        case 'и':
+            //и
+            for (int i{};i < N; i++) {
+                for (int j{};j < N; j++) {
+                    (i + j == N - 1 || i + j < N - 1) ? cout << " * " : cout << "   ";
+                }
+                cout << endl;
+            }
+            cout << endl;
+            break;
+        case 'к':
+            //к
+            for (int i{};i < N; i++) {
+                for (int j{};j < N; j++) {
+                    (i + j == N - 1 || i + j > N - 1) ? cout << " * " : cout << "   ";
+                }
+                cout << endl;
+            }
+            cout << endl;
+            break;
+        default:
+            symbol == '0' ? cout << "\nВыход из программы" : cout << "\nОшибка!\n";
+            break;
+        }
+    }
+}
+

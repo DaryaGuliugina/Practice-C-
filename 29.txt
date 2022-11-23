@@ -1,0 +1,103 @@
+#include <iostream>
+#include <string>
+#include <windows.h>
+using namespace std;
+/*
+Задание 1
+Создайте класс Book
+Необходимо хранить данные: Автор, Название, Издательство,
+Год, Количество страниц.
+Создать массив объектов. Вывести:
+■ список книг заданного автора;
+■ список книг, выпущенных заданным издательством;
+■ список книг, выпущенных после заданного года.
+Используйте explicit конструктор и константные функции-члены (например, для отображения данных о книге и т.д.)
+*/
+
+class Book {
+private:
+    string author;
+    string title;
+    string publisher;
+    int year;
+    int pageCount;
+public:
+    void showBook() const {
+        cout << endl << "Автор: " << author << endl;
+        cout << "Название: " << title << endl;
+        cout << "Издательство: " << publisher << endl;
+        cout << "Год: " << year << " г." << endl;
+        cout << "Количество страниц: " << pageCount << endl;
+    }
+    string getAuthor() const {
+        return author;
+    }
+    string getPublisher() const {
+        return publisher;
+    }
+    int getYear() const {
+        return year;
+    }
+    explicit Book(string author, string title, string publisher, int year, int pageCount) :
+        author{ author }, title{ title }, publisher{ publisher }, year{ year }, pageCount{ pageCount } {}
+    Book() : Book{"Unknow", "Unknow", "Unknow", 0,0 } {}
+};
+
+void clearCin() {
+    if (char(cin.peek()) == '\n')
+        cin.ignore();
+
+    if (cin.fail())
+    {
+        cin.clear();
+        cin.ignore(32767, '\n');
+    }
+}
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    Book book[5];
+    book[0] = Book("Джордж Оруэлл", "1984", "АСТ", 2021, 318);
+    book[1] = Book("Джордж Оруэлл", "Скотный двор", "Эксмо", 2021, 160);
+    book[2] = Book("Рэй Брэдбери", "Лекарство от меланхолии", "АСТ", 2022, 320);
+    book[3] = Book("Рэй Брэдбери", "Вино из одуванчиков", "Эксмо", 2021, 320);
+    book[4] = Book("Фрэнк Герберт", "Дюна", "АСТ", 2021, 768);
+    int choise{}, year{};
+    string author, publisher;
+    cout << endl << "1 - Поиск по автору" << endl;
+    cout << "2 - Поиск по издательству" << endl;
+    cout << "3 - Поиск по году" << endl;
+    cout << "Введите пункт меню: ";
+    cin >> choise;
+    switch (choise)
+    {
+    case 1:
+        cout << "Введите имя автора: ";
+        clearCin();
+        getline(cin, author);
+        for (int i{}; i < 5; i++) 
+            if (author == book[i].getAuthor()) book[i].showBook(); 
+        break;
+    case 2:
+        cout << "Введите название издательства: ";
+        clearCin();
+        getline(cin, publisher);
+        for (int i{}; i < 5; i++) 
+            if (publisher == book[i].getPublisher()) book[i].showBook(); 
+        break;
+    case 3:
+        cout << "Введите год: ";
+        clearCin();
+        cin >> year;
+        for (int i{}; i < 5; i++) 
+            if (book[i].getYear() >= year) book[i].showBook(); 
+        break;
+    default:
+        cout << "Такого пункта нет в меню" << endl;
+        break;
+    }
+
+}

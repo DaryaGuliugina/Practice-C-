@@ -1,0 +1,87 @@
+#include <iostream>
+using namespace std;
+
+/*
+Создать класс «Дробь» для представления простой
+дроби.
+Поля:
+■ числитель,
+■ знаменатель.
+Функции-члены:
+■ конструктор принимающий числитель и знаменатель.
+В конструкторе использовать список инициализаторов полей класса.
+▷ конструктор по умолчанию, реализовать через делегирование конструктору с параметрами числитель и знаменатель;
+▷ вывод на экран дроби;
+▷ сложение/вычитание/умножение простой дроби
+с простой дробью;
+▷ сложение/вычитание/умножение простой дроби
+с целым числом.
+В арифметических операциях предусмотреть возможность вызова операций по цепочке используя указатель this.
+Предусмотреть сокращение дроби. Сокращение рекомендуется производить в конструкторе.
+*/
+
+class Fraction {
+private:
+    int numerator;
+    int denominator;
+public:
+    void showFraction() {
+        cout << numerator << endl << "-" << endl << denominator << endl;
+    }
+    void reduction() {
+        int N{};
+        numerator > denominator ? N = numerator : N = denominator;
+        for (int i{ 1 }; i <= N; i++) {
+            if (numerator % i == 0 && denominator % i == 0) {
+                numerator /= i;
+                denominator /= i;
+            }
+        }
+    }
+    Fraction& add(int _numerator, int _denominator) {
+        numerator = numerator * _denominator + denominator * _numerator;
+        denominator *= _denominator;
+        reduction();
+        return *this;
+    }
+    Fraction& add(int _integer) {
+        numerator += _integer * denominator;
+        reduction();
+        return *this;
+    }
+    Fraction& sub(int _numerator, int _denominator) {
+        numerator = numerator * _denominator - denominator * _numerator;
+        denominator *= _denominator;
+        reduction();
+        return *this;
+    }
+    Fraction& sub(int _integer) {
+        numerator -= _integer * denominator;
+        reduction();
+        return *this;
+    }
+    Fraction& mult(int _numerator, int _denominator) {
+        numerator *= _numerator;
+        denominator *= _denominator;
+        reduction();
+        return *this;
+    }
+    Fraction& mult(int _integer) {
+        numerator *= _integer;
+        reduction();
+        return *this;
+    }
+    Fraction(int _numerator, int _denominator) : numerator{ _numerator }, denominator{ _denominator } {
+        reduction();
+    }
+    Fraction() : Fraction{1, 1} {}
+};
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    Fraction fract1(3, 9);
+    fract1.showFraction();
+    fract1.add(10).mult(2, 3).sub(5);
+    fract1.showFraction();
+}

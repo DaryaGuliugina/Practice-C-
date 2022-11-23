@@ -1,0 +1,294 @@
+#include <iostream>
+using namespace std;
+
+struct Element {
+    int data;//Данные
+    Element* next;//указатель на следующий узел
+    Element* prev;//указатель на предыдущий узел
+};
+class List {
+private:
+    Element* Head;//Голова
+    Element* Tail;//Хвост
+    int Count;//Кол-во узлов в списке
+public:
+    //Контруктор 
+    List();
+    //Конструктор копирования
+    List(const List& );
+    //Деструктор
+    ~List();
+    //Получить кол-во узлов
+    int GetCount();
+    //Возращаем элемент списка
+    Element* GetElem(int);
+    //Удалить весь список
+    void DelAll();
+    /*Удаление элемента, если параметр не указывается
+    то функция его запрашивать*/
+    void Del(int pos = 0);
+    /*Вставка элемента, если параметр не указывается,
+    то функция его запрашивает*/
+    void Insert(int pos = 0);
+    //Добавление элемента в конец списка
+    void AddTail(int );
+    //Добавление элемента в начало списка
+    void AddHead(int);
+    //Печать списка
+    void Print();
+    //Печать определенного элемента списка
+    void Print(int);
+    //Сложение двух списков (конкантенация)
+    List operator+(const List&);
+    //Перегрузка оператора равно
+    List& operator=(const List&);
+};
+int main()
+{
+    List D_list;
+    const int n = 10;
+    int a[n]{ 0,1,2,3,4,5,6,7,8,9 };
+    for (int i = 0; i < n; i++) {
+        if (i % 2 == 0)
+            D_list.AddHead(a[i]);
+        else
+            D_list.AddTail(a[i]);
+    }
+    cout << "List D_list: ";
+    D_list.Print();
+
+}
+
+List::List()
+{   //Изначально список пустой
+    Head = Tail = NULL;
+    Count = 0;
+}
+
+List::List(const List& L)//L-список,который копируем
+{
+    //Голову списка из которого копируем данные
+    Element* temp = L.Head;
+    //Пока не конец списка
+    while (temp != 0) {//temp->next != 0
+        AddTail(temp->data);
+        temp = temp->next;//аналог temp++;
+    }
+}
+
+List::~List()
+{   //Удаляем все элементы
+    DelAll();
+}
+
+int List::GetCount()
+{
+    return Count;
+}
+
+Element* List::GetElem(int pos)
+{
+    Element* temp = Head;
+    if (pos<1 || pos>Count) {
+        cout << "Incorrect position!\n";
+        return 0;
+    }
+    int i = 1;
+    //Ищем нужный элемент
+    while (i < pos && temp != 0) {
+        temp = temp->next;
+        i++;
+    }
+    if (temp == 0) //Если элемента нет
+        return 0;
+    else//Если элемент найден
+        return temp;
+}
+
+void List::DelAll()
+{//Пока остаются элементы, удаляем по одному с головы
+    while (Count != 0)
+        Del(1);
+}
+
+void List::Del(int pos)
+{   //Если параметр отсуствует или равен 0, 
+    //то запрашиваем его
+    if (pos == 0) {
+        cout << "Input position: ";
+        cin >> pos;
+    }
+    //Позиция от 1 до Count
+    if (pos<1 || pos>Count) {
+        cout << "Incorrect position\n";
+        return;
+    }
+    int i = 1;
+    Element* Del = Head;
+    while (i < pos) {
+        //Доходим до элемента, который удаляется
+        Del = Del->next;
+        i++;
+    }
+    //Доходим до элемента,который предшествует удаляемому
+    Element* PrevDel = Del->prev;
+    //Доходим до элемента,который следует за удаляемым
+    Element* AfterDel = Del->next;
+    //Если удаляем не голову
+    if (PrevDel != 0 && Count != 1)
+        PrevDel->next = AfterDel;
+    //Если удаляем не хвост
+    if (AfterDel != 0 && Count != 1)
+        AfterDel->prev = PrevDel;
+    //Удаляются крайние элементы?
+    if (pos == 1)
+        Head = AfterDel;
+    if (pos == Count)
+        Tail = PrevDel;
+    delete Del;
+    Count--;
+}
+
+void List::Insert(int pos)
+{
+    /*Если параметр отсуствует или равен 0,
+      то запрашиваем его*/
+    if (pos == 0) {
+        cout << "Input position: ";
+        cin >> pos;
+    }
+    /*Позиция от 1 до Count*/
+    if (pos<1 || pos>Count + 1) {
+        cout << "Incorrect position!\n";
+        return;
+    }
+    //Вставляемые данные
+    int data;
+    cout << "Input new data: ";
+    cin >> data;
+    //если вставка в конец списка
+    if (pos == Count + 1) {
+        //Добавление в конец списка
+        AddTail(data);
+        return;
+    }
+    else {
+        if (pos == 1) {
+            //Добавление в начало списка
+            AddHead(data);
+            return;
+        }
+        //Счетчик
+        int i = 1;
+        //Отсчитываем от головы n-1 элементов
+        Element* Ins = Head;
+        while (i < pos) {
+            //Доходим до элемента перед которым вставляем элемент
+            Ins = Ins->next;
+            i++;
+        }
+        //доходим до элемента, который предшествует
+        Element* PrevIns = Ins->prev;
+        //Создаем новый элемент
+        Element* temp = new Element;
+        //Присваиваем введенные данные
+        temp->data = data;
+        //Настройка связей
+        if (PrevIns != 0 && Count != 1) {
+            PrevIns->next = temp;
+            temp->next = Ins;
+            temp->prev = PrevIns;
+            Ins->prev = temp;
+            Count++;
+        }
+    }
+}
+
+void List::AddTail(int n)
+{
+    //Новый элемент
+    Element* temp = new Element;
+    //Следующего элемента нет
+    temp->next = 0;
+    //Заполняем данные
+    temp->data = n;
+    //Предыдущий элемент - бывший хвост
+    temp->prev = Tail;
+    //Если есть элементы в списке?
+    if (Tail != 0)
+        Tail->next = temp;
+    //Если  элемент 1ый, то он одновременно
+    //и голова и хвост
+    if (Count == 0)
+        Head = Tail = temp;
+    else
+        Tail = temp;//Новый элемент - хвост
+    Count++;
+}
+
+void List::AddHead(int n) //n-добавляемые данные
+{
+    //Новый элемент
+    Element* temp = new Element;
+    //Предыдущего элемента нет
+    temp->prev = 0;
+    //Заполняем данные
+    temp->data = n;
+    //Следующий - бывшая голова
+    temp->next = Head;
+    //Если есть элементы в списке?
+    if (Head != 0)
+        Head->prev = temp;
+    //Если  элемент 1ый, то он одновременно
+    //и голова и хвост
+    if (Count == 0)
+        Head = Tail = temp;
+    else
+        Head = temp;//Новый элемент - голова
+    Count++;
+
+}
+
+void List::Print()
+{/*Если в спике присуствуют элементы, то пробегаем по
+ нему и печатаем элементы, начиная с головы*/
+    if (Count != 0) {
+        Element* temp = Head;
+        while (temp->next!=0) {
+            cout << temp->data << endl;
+            temp = temp->next;
+        }
+        cout <<". "<<endl;
+    }
+}
+
+void List::Print(int pos)
+{
+    if (pos<1 || pos>Count) {
+        cout << "Incorrect position\n";
+    }
+    Element* temp = nullptr;
+    //Определяем с какой стороны быстрее двигаться
+    if (pos <= Count / 2) {
+        //Отсчёт начинаем с головы
+        temp = Head;
+        int i = 1;
+        while (i < pos) {
+            //Двигаемся до нужного элемента
+            temp = temp->next;
+            i++;
+        }
+    }
+    else {
+        //Отсчёт с хвоста
+        temp = Tail;
+        int i = 1;
+        while (i <= Count - pos) {
+            //Двигаемся до нужного элемента
+            temp = temp->prev;
+            i++;
+        }
+    }
+    //Вывод данных элемента
+    cout << pos << " element: " << temp->data<<endl;
+}

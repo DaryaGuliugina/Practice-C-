@@ -1,0 +1,65 @@
+#include <iostream>
+using namespace std;
+
+/*
+Создать абстрактный базовый класс Employer (служащий) с чисто виртуальной функцией Print(). 
+Создайте три производных класса: President, Manager, Worker. 
+Переопределите функцию Print() для вывода информации, соответствующей каждому типу служащего.
+*/
+
+class Employer {
+protected:
+	string name;
+	int age;
+public:
+	virtual void print() = 0;
+	Employer(string name, int age) : name{ name }, age{ age }{}
+	virtual ~Employer(){}
+};
+
+class President : public Employer {
+public:
+	void print() {
+		cout << "\nPresident\n";
+		cout << "name: " << name << endl;
+		cout << "age: " << age << endl;
+	}
+	President(string name, int age) : Employer(name, age) {}
+};
+
+class Manager : public Employer {
+private:
+	int department;
+public:
+	void print() {
+		cout << "\nManager\n";
+		cout << "name: " << name << endl;
+		cout << "age: " << age << endl;
+		cout << "department: " << department << endl;
+	}
+	Manager(string name, int age, int department) : Employer(name, age) {
+		this->department = department;
+	}
+};
+
+class Worker : public Employer {
+private:
+	int group;
+public:
+	void print() {
+		cout << "\nWorker\n";
+		cout << "name: " << name << endl;
+		cout << "age: " << age << endl;
+		cout << "group: " << group << endl;
+	}
+	Worker(string name, int age, int group) : Employer(name, age) {
+		this->group = group;
+	}
+};
+
+int main() {
+	Employer* ptr[3]{ new President("Steve", 52), new Manager("Alan", 32, 3), new Worker("Jhon", 22, 1) };
+	for (int i{}; i < 3; i++) {
+		ptr[i]->print();
+	}
+}

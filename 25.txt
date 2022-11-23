@@ -1,0 +1,102 @@
+#include <iostream>
+using namespace std;
+
+/*
+Задание.
+Реализуйте класс Дробь. Необходимо хранить числитель
+и знаменатель в качестве переменных-членов. Реализуйте
+функции-члены для ввода данных в переменные-члены,
+для выполнения арифметических операций (сложение,
+вычитание, умножение, деление, и т.д.).
+*/
+
+class Fraction {
+private:
+    int numerator;
+    int denominator;
+public:
+    int getNumerator() {
+        return numerator;
+    }
+
+    int getDenominator() {
+        return denominator;
+    }
+    void initFraction();
+    void reduction(int, int);
+    void sum(int, int, int, int);
+    void difference(int, int, int, int);
+    void product(int, int, int, int);
+    void quotient(int, int, int, int);
+};
+
+void Fraction::initFraction() {
+    cout << "Введите числитель: ";
+    cin >> numerator;
+    cout << "Введите знаменатель: ";
+    cin >> denominator;
+}
+
+void Fraction::reduction(int a, int b) {
+    if (a > b) {
+        int x = a;
+        a = b;
+        b = x;
+    }
+    for (int i{ 1 }; i <= b; i++) {
+        if (a % i == 0 && b % i == 0) {
+            a /= i;
+            b /= i;
+        }
+    }
+    cout << a << "/" << b;
+}
+
+void Fraction::sum(int numerator1, int denominator1, int numerator2, int denominator2) {
+    int sum1{}, sum2{};
+    sum1 = (numerator1 * denominator2) + (numerator2 * denominator1);
+    sum2 = denominator1 * denominator2;
+    reduction(sum1, sum2);
+}
+
+void Fraction::difference(int numerator1, int denominator1, int numerator2, int denominator2) {
+    int dif1{}, dif2{};
+    dif1 = (numerator1 * denominator2) - (numerator2 * denominator1);
+    dif2 = denominator1 * denominator2;
+    reduction(dif1, dif2);
+}
+
+void Fraction::product(int numerator1, int denominator1, int numerator2, int denominator2) {
+    int mult1{}, mult2{};
+    mult1 = numerator1 * numerator2;
+    mult2 = denominator1 * denominator2;
+    reduction(mult1, mult2);
+}
+
+void Fraction::quotient(int numerator1, int denominator1, int numerator2, int denominator2) {
+    int quo1{}, quo2{};
+    quo1 = numerator1 * denominator2;
+    quo2 = numerator2 * denominator1;
+    reduction(quo1, quo2);
+}
+
+int main()
+{
+    setlocale(LC_ALL, "");
+
+    Fraction fraction1;
+    Fraction fraction2;
+    Fraction fraction3;
+
+    fraction1.initFraction();
+    fraction2.initFraction();
+
+    cout << "\nСумма: ";
+    fraction3.sum(fraction1.getNumerator(), fraction1.getDenominator(), fraction2.getNumerator(), fraction2.getDenominator());
+    cout << "\nРазность: ";
+    fraction3.difference(fraction1.getNumerator(), fraction1.getDenominator(), fraction2.getNumerator(), fraction2.getDenominator());
+    cout << "\nПроизведение: ";
+    fraction3.product(fraction1.getNumerator(), fraction1.getDenominator(), fraction2.getNumerator(), fraction2.getDenominator());
+    cout << "\nЧастное: ";
+    fraction3.quotient(fraction1.getNumerator(), fraction1.getDenominator(), fraction2.getNumerator(), fraction2.getDenominator());
+}

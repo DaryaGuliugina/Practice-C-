@@ -1,0 +1,277 @@
+#include <iostream>
+using namespace std;
+
+void initArr(int* ptr[], int M, int N);
+void printArr(int* ptr[], int M, int N);
+void deleteArr(int* ptr[], int M, int N);
+void shiftArr(int* ptr[], int M, int N, int k, int p); 
+void shiftArr(int* ptr[], int M, int N, int k, int p, int p1, int k1); 
+
+int main() {
+	/*
+	Задание 1. Дана матрица порядка M×N (M строк, N столбцов). Необходимо заполнить ее значениями и написать
+	функцию, осуществляющую циклический сдвиг строк
+	и/или столбцов массива указанное количество раз и в указанную сторону.
+	*/
+	setlocale(LC_ALL, "");
+	srand(time(NULL));
+	int M{}, N{};
+	cout << "Введите размер матрицы" << endl;
+	cout << "Строки: ";
+	cin >> M;
+	cout << "Столбцы: ";
+	cin >> N;
+	int** ptr;
+	int k{}, p{}, p1{}, k1{}, choise{};
+	ptr = new int* [M];
+	for (int i = 0; i < M;i++) {
+		ptr[i] = new int[N];
+	}
+	initArr(ptr, M, N);
+	cout << endl <<"Исходная матрица: " << endl;
+	printArr(ptr, M, N);
+	cout << endl << "1 - Сдвиг строк или столбцов" << endl;
+	cout << "2 - Сдвиг строк и столбцов" << endl;
+	cout << endl << "Введите пункт меню: ";
+	cin >> choise;
+	switch (choise)
+	{
+	case 1:
+		cout << endl << "Направление: " << endl;
+		cout << "1 - Вправо" << endl;
+		cout << "2 - Влево" << endl;
+		cout << "3 - Вверх" << endl;
+		cout << "4 - Вниз" << endl;
+		cout << "0 - Выход" << endl;
+		cout << endl << "Введите направление: ";
+		cin >> p;
+		if (p == 0) break;
+		cout << endl << "Введите сдвиг: ";
+		cin >> k;
+		shiftArr(ptr, M, N, k, p);
+		break;
+	case 2:
+		cout << endl << "Направление: " << endl;
+		cout << "1 - Вправо" << endl;
+		cout << "2 - Влево" << endl;
+		cout << "3 - Вверх" << endl;
+		cout << "4 - Вниз" << endl;
+		cout << "0 - Выход" << endl;
+		cout << endl << "Введите направление 1: ";
+		cin >> p;
+		if (p == 0) break;
+		cout << endl << "Введите сдвиг: ";
+		cin >> k;
+		cout << endl << "Введите направление 2: ";
+		cin >> p1;
+		if (p1 == 0) break;
+		cout << endl << "Введите сдвиг: ";
+		cin >> k1;
+		shiftArr(ptr, M, N, k, p, p1, k1);
+		break;
+	default:
+		break;
+	}
+	cout << endl << "Выход";
+	deleteArr(ptr, M, N);
+}
+
+void initArr(int* ptr[], int M, int N) {
+	for (int i{}; i < M; i++) {
+		for (int j{}; j < N; j++) {
+			ptr[i][j] = rand() % 10;
+		}
+	}
+}
+
+void printArr(int* ptr[], int M, int N) {
+	cout << endl;
+	for (int i{}; i < M; i++) {
+		for (int j{}; j < N; j++) {
+			cout << ptr[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
+
+void deleteArr(int* ptr[], int M, int N) {
+	for (int i = 0; i < M; i++) {
+		delete[] ptr[i];
+	}
+	delete[] ptr;
+}
+
+void shiftArr(int* ptr[], int M, int N, int k, int p) {
+	int** ptr1;
+	ptr1 = new int* [M];
+	for (int i = 0; i < M;i++) {
+		ptr1[i] = new int[N];
+	}
+	switch (p)
+	{
+	case 1:
+		for (int i = 0; i < M; i++)
+		{
+			for (int j = 0; j < N; j++)
+			{
+				if (k > N - 1) k = 0;
+				ptr1[i][k] = ptr[i][j];
+				k++;
+			}
+		}
+
+		break;
+	case 2:
+		for (int i = 0; i < M; i++)
+		{
+			for (int j = 0; j < N; j++)
+			{
+				if (k > N - 1) k = 0;
+				ptr1[i][j] = ptr[i][k];
+				k++;
+			}
+		}
+		break;
+	case 3:
+		for (int i = 0; i < N; i++)
+		{
+			for (int j = 0; j < M; j++)
+			{
+				if (k > M - 1) k = 0;
+				ptr1[j][i] = ptr[k][i];
+				k++;
+			}
+		}
+		break;
+	case 4:
+		for (int i = 0; i < N; i++)
+		{
+			for (int j = 0; j < M; j++)
+			{
+				if (k > M - 1) k = 0;
+				ptr1[k][i] = ptr[j][i];
+				k++;
+			}
+		}
+		break;
+	default:
+		break;
+	}
+	printArr(ptr1, M, N);
+	deleteArr(ptr1, M, N);
+}
+
+void shiftArr(int* ptr[], int M, int N, int k, int p, int p1, int k1) {
+	int** ptr1;
+	ptr1 = new int* [M];
+	for (int i = 0; i < M;i++) {
+		ptr1[i] = new int[N];
+	}
+	switch (p)
+	{
+	case 1:
+		for (int i = 0; i < M; i++)
+		{
+			for (int j = 0; j < N; j++)
+			{
+				if (k > N - 1) k = 0;
+				ptr1[i][k] = ptr[i][j];
+				k++;
+			}
+		}
+
+		break;
+	case 2:
+		for (int i = 0; i < M; i++)
+		{
+			for (int j = 0; j < N; j++)
+			{
+				if (k > N - 1) k = 0;
+				ptr1[i][j] = ptr[i][k];
+				k++;
+			}
+		}
+		break;
+	case 3:
+		for (int i = 0; i < N; i++)
+		{
+			for (int j = 0; j < M; j++)
+			{
+				if (k > M - 1) k = 0;
+				ptr1[j][i] = ptr[k][i];
+				k++;
+			}
+		}
+		break;
+	case 4:
+		for (int i = 0; i < N; i++)
+		{
+			for (int j = 0; j < M; j++)
+			{
+				if (k > M - 1) k = 0;
+				ptr1[k][i] = ptr[j][i];
+				k++;
+			}
+		}
+		break;
+	default:
+		break;
+	}
+	int** ptr2;
+	ptr2 = new int* [M];
+	for (int i = 0; i < M;i++) {
+		ptr2[i] = new int[N];
+	}
+	switch (p1)
+	{
+	case 1:
+		for (int i = 0; i < M; i++)
+		{
+			for (int j = 0; j < N; j++)
+			{
+				if (k1 > N - 1) k1 = 0;
+				ptr2[i][k1] = ptr1[i][j];
+				k1++;
+			}
+		}
+		break;
+	case 2:
+		for (int i = 0; i < M; i++)
+		{
+			for (int j = 0; j < N; j++)
+			{
+				if (k1 > N - 1) k1 = 0;
+				ptr2[i][j] = ptr1[i][k1];
+				k1++;
+			}
+		}
+		break;
+	case 3:
+		for (int i = 0; i < N; i++)
+		{
+			for (int j = 0; j < M; j++)
+			{
+				if (k1 > M - 1) k1 = 0;
+				ptr2[j][i] = ptr1[k1][i];
+				k1++;
+			}
+		}
+		break;
+	case 4:
+		for (int i = 0; i < N; i++)
+		{
+			for (int j = 0; j < M; j++)
+			{
+				if (k1 > M - 1) k1 = 0;
+				ptr2[k1][i] = ptr1[j][i];
+				k1++;
+			}
+		}
+		break;
+	default:
+		break;
+	}
+	printArr(ptr2, M, N);
+	deleteArr(ptr1, M, N);
+	deleteArr(ptr2, M, N);
+}

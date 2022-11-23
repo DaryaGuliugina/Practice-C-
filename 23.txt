@@ -1,0 +1,68 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+/*
+Задание 1.
+Создать класс Человек.Для описания объекта использовать переменные: 
+имя, фамилия, возраст, пол, занимаемая должность. 
+Написать акссесоры и модификаторы для каждой переменной класса.
+*/
+
+class Human {
+private:
+    string name;
+    string surname;
+    int age;
+    char gender;
+    string currentPost;
+public:
+    void setName(string _name) {
+        name = _name;
+    }
+    string getName() {
+        return name;
+    }
+    void setSurname(string _surname) {
+        surname = _surname;
+    }
+    string getSurname() {
+        return surname;
+    }
+    void setAge(int _age) {
+        age = _age;
+    }
+    int getAge() {
+        return age;
+    }
+    void setGender(char _gender) {
+        gender = _gender;
+    }
+    char getGender() {
+        return gender;
+    }
+    void setCurrentPost(string _currentPost) {
+        currentPost = _currentPost;
+    }
+    string getCurrentPost() {
+        return currentPost;
+    }
+};
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    Human human1;
+
+    human1.setName("Иван");
+    human1.setSurname("Иванов");
+    human1.setAge(35);
+    human1.setGender('М');
+    human1.setCurrentPost("Секретарь");
+    
+    cout << "Имя: " << human1.getName() << endl;
+    cout << "Фамилия: " << human1.getSurname() << endl;
+    cout << "Возраст: " << human1.getAge() << endl;
+    cout << "Пол: " << human1.getGender() << endl;
+    cout << "Занимаемая должность: " << human1.getCurrentPost() << endl;
+}

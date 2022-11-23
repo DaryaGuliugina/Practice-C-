@@ -1,0 +1,56 @@
+#include <iostream>
+using namespace std;
+
+void leap_year_first(int months[], int first_year);
+void leap_year_last(int months[], int last_year);
+void subtraction_dates(int first_day, int first_month, int first_year, int last_day, int last_month, int last_year);
+
+int main()
+{
+    setlocale(LC_ALL, "");
+
+    int first_day{}, first_month{}, first_year{}, last_day{}, last_month{}, last_year{};
+    cout << "Введите первую дату: " << endl;
+    cout << "День: ";
+    cin >> first_day;
+    cout << "Месяц: ";
+    cin >> first_month;
+    cout << "Год: ";
+    cin >> first_year;
+    cout << endl << "Введите вторую дату: " << endl;
+    cout << "День: ";
+    cin >> last_day;
+    cout << "Месяц: ";
+    cin >> last_month;
+    cout << "Год: ";
+    cin >> last_year;
+    cout << endl;
+    subtraction_dates(first_day, first_month, first_year, last_day, last_month, last_year);
+}
+
+void leap_year_first(int months[], int first_year) {
+    first_year % 4 == 0 ? months[1] = 29 : months[1] = 28;
+}
+
+void leap_year_last(int months[], int last_year) {
+    last_year % 4 == 0 ? months[1] = 29 : months[1] = 28;
+}
+
+void subtraction_dates(int first_day, int first_month, int first_year, int last_day, int last_month, int last_year) {
+    int months[12]{ 31,28,31,30,31,30,31,31,30,31,30,31 };
+    int sum1{}, sum2{}, counter{}, res{};
+    leap_year_first(months, first_year);
+    for (int i{ 0 }; i < first_month - 1; i++) {
+        sum1 += months[i];
+    }
+    leap_year_last(months, last_year);
+    for (int i{ 0 }; i < last_month - 1; i++) {
+        sum2 += months[i];
+    }
+    for (int i = first_year; i < last_year; i++) {
+        if (i % 4 == 0) counter++;
+    }
+    res = 366 * counter + 365 * (last_year - first_year - counter);
+    cout << "Разность в днях между датами: " << res + last_day + sum2 - first_day - sum1 << endl;
+}
+

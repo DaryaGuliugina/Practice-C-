@@ -1,0 +1,158 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "");
+
+    srand(time(NULL));
+    
+    /*
+    ЗАДАНИЕ 1
+    Написать программу «справочник». Создать два одномерных
+    массива. Один массив хранит номера мобильных телефонов,
+    второй — домашние телефонные номера.
+    Реализовать меню для пользователя:
+    ■ Отсортировать по номерам мобильных
+    ■ Отсортировать по домашним номерам телефонов;
+    ■ Вывести пользовательский данные;
+    ■ Выход.
+    */
+
+    const int SIZE{5};
+    /*
+    на реальных номерах лучше не тестировать, 
+    11-значный номер вылезает за пределы int, 
+    можно засунуть в double, но тогда программа начинает заниматься преобразованиями
+    */
+    int mobile_phones[SIZE]{}, home_phones[SIZE]{}; 
+    int choise{}, data_verification{0};
+
+    do {
+        cout << "\n1 - Ввод данных" << endl;
+        cout << "2 - Вывод данных" << endl;
+        cout << "3 - Сортировка мобильных номеров телефонов" << endl;
+        cout << "4 - Сортировка домашних номеров телефонов" << endl;
+        cout << "0 - Выход" << endl;
+        cout << "Выберите пунк меню: ";
+        cin >> choise;
+        switch (choise)
+        {
+        case 1:
+            data_verification = 1;
+            cout << "Введите мобильные номера телефонов: " << endl;
+            for (int i{};i < SIZE;i++) {
+                cin >> mobile_phones[i];
+            }
+            cout << "Введите домашние номера телефонов: " << endl;
+            for (int i{};i < SIZE;i++) {
+                cin >> home_phones[i];
+            }
+
+            break;
+        case 2:
+            if (data_verification == 1) {
+                cout << "Мобильные номера телефонов: " << endl;
+                for (int i{};i < SIZE;i++) {
+                    cout << mobile_phones[i] << endl;
+                }
+                cout << endl;
+                cout << "Домашние номера телефонов: " << endl;
+                for (int i{};i < SIZE;i++) {
+                    cout << home_phones[i] << endl;
+                }
+            }
+            else {
+                cout << "\nОшибка данных!" << endl;
+            }
+            break;
+        case 3:
+            if (data_verification == 1) {
+                cout << "\nСортировка мобильных номеров телефонов...\n";
+                for (int i = 1; i < SIZE; ++i)
+                {
+                    for (int j = 0; j < SIZE - i; j++)
+                    {
+                        if (mobile_phones[j] < mobile_phones[j + 1])
+                        {
+                            swap(mobile_phones[j], mobile_phones[j + 1]);
+                        }
+                    }
+                }
+            }
+            else {
+                cout << "\nОшибка данных!" << endl;
+            }
+            break;
+        case 4:
+            if (data_verification == 1) {
+                cout << "\nСортировка домашних номеров телефонов...\n";
+                for (int i = 1; i < SIZE; ++i)
+                {
+                    for (int j = 0; j < SIZE - i; j++)
+                    {
+                        if (home_phones[j] < home_phones[j + 1])
+                        {
+                            swap(home_phones[j], home_phones[j + 1]);
+                        }
+                    }
+                }
+            }
+            else {
+                cout << "\nОшибка данных!" << endl;
+            }
+            break;
+        case 0:
+            cout << "\nВыход\n";
+            break;
+        default:
+            cout << "\nОшибка меню!\n";
+            break;
+        }
+    } while (choise != 0);
+
+    /*
+    ЗАДАНИЕ 2
+    Написать программу, реализующую сортировку массива с
+    помощью усовершенствованной сортировки пузырьковым методом.
+    Усовершенствование состоит в том, чтобы анализировать
+    количество перестановок на каждом шагу, если это количество
+    равно нулю, то продолжать сортировку нет смысла — массив
+    отсортирован.
+    */
+
+    const int SIZE1 = 10;
+    int arr[SIZE1], counter{};
+
+    cout << "Первоначальный массив: " << endl;
+    for (int i{};i < SIZE1; i++) {
+        arr[i] = -50 + rand() % 101;
+        cout << arr[i] << " ";
+    }
+
+    cout << endl;
+
+    for (int i = 1; i < SIZE1; ++i)
+    {
+        counter = 0;
+        for (int j = 0; j < SIZE1 - i; j++)
+        {
+            if (arr[j] > arr[j + 1])
+            {
+                swap(arr[j], arr[j + 1]);
+                counter++;
+            }
+        }
+        if (counter == 0) {
+            cout << "\nПроцесс сортировки остановлен на ";
+            cout << i << " шаге" << endl;
+            break;
+        }
+    }
+
+    cout << "\nОтсортированный массив: " << endl;
+    for (int i{}; i < SIZE1; i++) {
+        cout << arr[i] << " ";
+    }
+
+}

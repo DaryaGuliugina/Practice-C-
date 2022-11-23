@@ -1,0 +1,178 @@
+#include <iostream>
+using namespace std;
+
+int task_1(int basis, int indicator) {
+    int result{ 1 };
+    while (indicator != 0) {
+        result *= basis;
+        indicator--;
+    }
+    return result;
+}
+
+int task_2(int begin, int end) {
+    int sum{};
+    if (begin > end) {
+        int x = begin;
+        begin = end;
+        end = x;
+    }
+    for (int i = begin; i <= end;i++) {
+        sum += i;
+    }
+    return sum;
+}
+
+void task_3(int begin, int end) {
+    int sum{};
+    if (begin > end) {
+        int x = begin;
+        begin = end;
+        end = x;
+    }
+    for (int i = begin; i <= end;i++) {
+        sum = 0;
+        for (int j{ 1 }; j < i; j++) {
+            if (i % j == 0) {
+                sum += j;
+            }
+        }
+        if (sum == i) {
+            cout << i << " ";
+        }
+    }
+}
+
+void task_4(int card_number, int suit_number) {
+    setlocale(LC_CTYPE, "C");
+    char top_botton = 196, side_line = 179, top_right_corner = 191, top_left_corner = 218, lower_left_corner = 192, lower_right_corner = 217;
+    char cards[13]{ 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K' };
+    char suits[4]{ 3, 4, 5, 6 };
+    cout << " " << top_left_corner;
+    for (int i{}; i < 7; i++) {
+        cout << top_botton;
+    }
+    cout << top_right_corner;
+    cout << endl;
+    cout << " " << side_line << cards[card_number - 1] << suits[suit_number - 1] << "\t " << side_line << endl;
+    for (int i{}; i < 5; i++) {
+        cout << " " << side_line << "\t " << side_line << endl;
+    }
+    cout << " " << side_line << "     " << suits[suit_number - 1] << cards[card_number - 1] << side_line << endl;
+    cout << " " << lower_left_corner;
+    for (int i{}; i < 7; i++) {
+        cout << top_botton;
+    }
+    cout << lower_right_corner;
+    setlocale(LC_CTYPE, "Rus");
+}
+
+void task_5(int num) {
+    int sum1{}, sum2;
+    sum1 = num / 100000 + num / 10000 % 10 + num / 1000 % 10;
+    sum2 = num / 100 % 10 + num / 10 % 10 + num % 10;
+    if (sum1 == sum2) {
+        cout << "Число " << num << " счасливое";
+    }
+    else {
+        cout << "Число " << num << " несчасливое";
+    }
+}
+
+
+int main()
+{
+    setlocale(LC_ALL, "Rus");
+
+    int choise{};
+    //task 1
+    int basis{}, indicator{}, result{};
+    //task 2
+    int begin{}, end{}, sum{};
+    //task 3
+    int begin1{}, end1{};
+    //task 4
+    int card_number{}, suit_number{};
+    //task 5
+    int num{};
+
+    do {
+        cout << "\n\n1 - Задача 1" << endl;
+        cout << "2 - Задача 2" << endl;
+        cout << "3 - Задача 3" << endl;
+        cout << "4 - Задача 4" << endl;
+        cout << "5 - Задача 5" << endl;
+        cout << "0 - Выход" << endl;
+        cout << "\nВыберите номер задачи: ";
+        cin >> choise;
+        switch (choise)
+        {
+        case 1:
+            cout << "Введите основание степени: ";
+            cin >> basis;
+            cout << "Введите показатель степени: ";
+            cin >> indicator;
+
+            result = task_1(basis, indicator);
+
+            cout << "Результат: " << result;
+            break;
+        case 2:
+            cout << "Введите начало диапазона: ";
+            cin >> begin;
+            cout << "Введите конец диапазона: ";
+            cin >> end;
+
+            sum = task_2(begin, end);
+            cout << "Результат: " << sum;
+            break;
+        case 3:
+            cout << "Введите начало диапазона: ";
+            cin >> begin1;
+            cout << "Введите конец диапазона: ";
+            cin >> end1;
+
+            cout << "Результат: ";
+            task_3(begin1, end1);
+            break;
+        case 4:
+            cout << "Номера карт: " << endl;
+            cout << "1 - Туз " << endl;
+            cout << "2 - Двойка" << endl;
+            cout << "3 - Тройка" << endl;
+            cout << "4 - Четверка" << endl;
+            cout << "5 - Пятерка" << endl;
+            cout << "6 - Шестерка" << endl;
+            cout << "7 - Семерка" << endl;
+            cout << "8 - Восьмерка" << endl;
+            cout << "9 - Девятка" << endl;
+            cout << "10 - Десятка" << endl;
+            cout << "11 - Валет" << endl;
+            cout << "12 - Дама" << endl;
+            cout << "13 - Король " << endl;
+
+            cout << endl << "Введите номер карты: ";
+            cin >> card_number;
+
+            cout << endl << "Номера мастей: " << endl;
+            cout << "1 - Червы " << endl;
+            cout << "2 - Бубны" << endl;
+            cout << "3 - Трефы" << endl;
+            cout << "4 - Пики" << endl;
+
+            cout << endl << "Введите номер масти: ";
+            cin >> suit_number;
+
+            task_4(card_number, suit_number);
+            break;
+        case 5:
+            cout << "Введите шестизначное число: ";
+            cin >> num;
+
+            task_5(num);
+            break;
+        default:
+            break;
+        }
+    } while (choise != 0);
+

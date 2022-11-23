@@ -1,0 +1,407 @@
+#include <iostream>
+#include <windows.h>
+#include <string>
+using namespace std;
+
+//Написать программу, которая на основе классов реализует карточную игру Блэк-Джек.
+
+class Player;
+class Cards;
+class Game;
+
+class Cards {
+private:
+	int sizeShoe;
+	string deck[52];
+	string* shoe;
+	string* shuffledShoe;
+	friend Player;
+public:
+	//Заполняем одну колоду
+	void Deck() {
+		string cardNumbers[13]{ "A", "2","3","4","5","6","7","8","9","10","J","Q","K" };
+		string suit[4]{ "\x06", "\x05", "\x03","\x04" };
+		for (int i{}; i < 52; i++) {
+			if (i < 13) { deck[i] = cardNumbers[i] + suit[0]; }
+			else if (i >= 13 && i < 26) { deck[i] = cardNumbers[i - 13] + suit[1]; }
+			else if (i >= 26 && i < 39) { deck[i] = cardNumbers[i - 26] + suit[2]; }
+			else if (i >= 39 && i < 52) { deck[i] = cardNumbers[i - 39] + suit[3]; }
+		}
+	}
+	//Заполняем башмак для карт
+	int Shoe(int counter) {
+		Deck();
+		int size = counter * 52;
+		shoe = new string[size];
+		int m{};
+		for (int j{}; j < counter; j++) {
+			for (int i{}; i < 52; i++) {
+				shoe[m] = deck[i];
+				m++;
+			}
+		}
+		return size;
+	}
+	//Мешаем карты
+	void ShuffleShoe(int numberDecks) {
+		int size = Shoe(numberDecks);
+		int* deckIndexes = new int[size]; //Массив индексов колоды
+		shuffledShoe = new string[size];
+		int index{};
+		int indexCounter{};
+		bool flag = false;
+		for (int i{}; i < size; i++) deckIndexes[i] = 500;
+		//Мешаем индексы колоды
+		while (indexCounter != size) {
+			flag = false;
+			index = rand() % size;
+			for (int i{}; i < size; i++)
+				if (index == deckIndexes[i]) { flag = true; break; }
+			if (!flag) {
+				deckIndexes[indexCounter] = index;
+				indexCounter++;
+			}
+		}
+		for (int i{}; i < size; i++)
+			shuffledShoe[i] = shoe[deckIndexes[i]];
+		sizeShoe = size;
+		delete[] deckIndexes;
+		delete[] shoe;
+	}
+	~Cards() { delete[] shuffledShoe; }
+};
+int cardIndex{};
+//
+class Player {
+private:
+	int sizePlayerDeck{};
+	int sizeDeck;
+	string* playerCards;
+	string* copyPlayerCards;
+	int counter{};
+	float bet{};
+	bool flag = true;
+	bool blackjack = false;
+	bool surrender = false;
+	string choice;
+	friend Game;
+public:
+	void SetBlackjack(bool _blackjack){
+		blackjack = _blackjack;
+	}
+	bool GetBlackjack() {
+		return blackjack;
+	}
+	int NominalValue(string card) {
+		int valueCard{};
+		if (card == "2\x03" || card == "2\x04" || card == "2\x05" || card == "2\x06") valueCard = 2;
+		else if (card == "3\x03" || card == "3\x04" || card == "3\x05" || card == "3\x06") valueCard = 3;
+		else if (card == "4\x03" || card == "4\x04" || card == "4\x05" || card == "4\x06") valueCard = 4;
+		else if (card == "5\x03" || card == "5\x04" || card == "5\x05" || card == "5\x06") valueCard = 5;
+		else if (card == "6\x03" || card == "6\x04" || card == "6\x05" || card == "6\x06") valueCard = 6;
+		else if (card == "7\x03" || card == "7\x04" || card == "7\x05" || card == "7\x06") valueCard = 7;
+		else if (card == "8\x03" || card == "8\x04" || card == "8\x05" || card == "8\x06") valueCard = 8;
+		else if (card == "9\x03" || card == "9\x04" || card == "9\x05" || card == "9\x06") valueCard = 9;
+
+		else if (card == "10\x06" || card == "J\x06" || card == "Q\x06" || card == "K\x06") valueCard = 10;
+		else if (card == "10\x05" || card == "J\x05" || card == "Q\x05" || card == "K\x05") valueCard = 10;
+		else if (card == "10\x04" || card == "J\x04" || card == "Q\x04" || card == "K\x04") valueCard = 10;
+		else if (card == "10\x03" || card == "J\x03" || card == "Q\x03" || card == "K\x03") valueCard = 10;
+		else if (card == "A\x03" || card == "A\x04" || card == "A\x05" || card == "A\x06") valueCard = 11;
+		return valueCard;
+	}
+	int SumCards() {
+		int Sum{};
+		for (int i{}; i < sizePlayerDeck; i++) {
+			Sum += NominalValue(playerCards[i]);
+		}
+		//проверка на тузы
+		for (int i{}; i < sizePlayerDeck; i++) {
+			if ((Sum > 21) && (NominalValue(playerCards[i]) == 11)) {
+				Sum -= 10;
+			}
+		}
+		return Sum;
+	}
+	void SetFlag(bool _flag) { flag = _flag; }
+	bool GetFlag() { return flag; }
+	void SetBet(float _bet) { bet = _bet; }
+	float GetBet() { return bet; }
+	void AddBet() { cin >> bet; }
+	//индексы
+	void AddCard(Cards& obj) {
+		string card;
+		card = obj.shuffledShoe[cardIndex];
+		if (counter == 0) {
+			playerCards = new string[1];
+			counter++;
+		}
+		copyPlayerCards = new string[sizePlayerDeck];
+		for (int i{}; i < sizePlayerDeck; i++) copyPlayerCards[i] = playerCards[i];
+		delete[] playerCards;
+		playerCards = new string[sizePlayerDeck + 1];
+		for (int i{}; i < sizePlayerDeck; i++) playerCards[i] = copyPlayerCards[i];
+		delete[] copyPlayerCards;
+		playerCards[sizePlayerDeck] = card;
+		sizePlayerDeck++;
+		cardIndex++;
+	}
+	void Show() {
+		for (int i{}; i < sizePlayerDeck; i++) {
+			cout << playerCards[i] << " ";
+		}
+	}
+	void ShowDealer(bool show) {
+		if (show == false) {
+			cout << playerCards[0] << " ";
+			cout << "X";
+		}
+		else {
+			for (int i{}; i < sizePlayerDeck; i++) {
+				cout << playerCards[i] << " ";
+			}
+			cout << "\nСУММА: " << SumCards();
+			cout << "\n";
+		}
+	}
+	~Player(){ delete[] playerCards; }
+};
+
+class Game {
+private:
+	int numPlayer{};
+	int numberDecks{};
+	Player* players;
+	Player dealer;
+	Cards shoe;
+	bool flag;
+public:
+	void Begin() {
+		cout << "\nВведите количество игроков: ";
+		numPlayer = 2;
+		cin >> numPlayer;
+		players = new Player[numPlayer];
+		do  {
+			cout << "\nВведите количество колод: ";
+			cin >> numberDecks;
+			system("cls");
+		} while (numberDecks < 1 || numberDecks > 8);
+		for (int i{}; i < numPlayer; i++) {
+			cout << "\nИГРОК " << i + 1 << " делает СТАВКУ: ";
+			players[i].AddBet();
+			system("cls");
+		}
+		system("cls");
+		cout << "\n\nРАЗДАЧА";
+		Sleep(1000);
+		system("cls");
+		shoe.ShuffleShoe(numberDecks);
+		for (int j{}; j < 2; j++) {
+			for (int i{}; i < numPlayer; i++) players[i].AddCard(shoe);
+			dealer.AddCard(shoe);
+		}
+	}
+	void ShowTable(bool showDealer) {
+		bool showBox;
+		for (int i{}; i < numPlayer; i++) {
+			showBox = players[i].GetFlag();
+			cout << "\nИГРОК " << i + 1 << " : ";
+			players[i].Show();
+			if (showBox == true) {
+				cout << "\nБОКС:" << players[i].GetBet() << "$";
+			}
+			cout << "\nСУММА: " << players[i].SumCards();
+			cout << "\n";
+		}
+		cout << "\nДИЛЕР : ";
+		dealer.ShowDealer(showDealer);
+	}
+	void GamePlay() {
+		string action;
+		int counter{};
+		for (int i{}; i < numPlayer; i++) {
+			counter = 0;
+			flag = true;
+			while (flag) {
+				ShowTable(false);
+				flag = false;
+				players[i].surrender = false;
+				//набор 21
+				if (players[i].SumCards() == 21 && counter != 0) {
+					cout << "\n\nИГРОК " << i + 1 << " У Вас 21!\n";
+					Sleep(1000);
+					players[i].SetFlag(false);
+					system("cls");
+					continue;
+				}
+				//блэкджек
+				if (players[i].SumCards() == 21 && counter == 0) {
+					string choice;
+					cout << "\n\nИГРОК " << i + 1 << " У Вас БЛЭКДЖЕК!\n";
+					players[i].SetBlackjack(true);
+					if (dealer.NominalValue(dealer.playerCards[0]) == 11) {
+						while (true) {
+							cout << "Хотите получить выплату сразу? (Введите 'yes' или 'no')\n";
+							cin >> choice;
+							if (choice == "yes") {
+								players[i].SetFlag(false);
+								players[i].choice = choice;
+								break;
+							}
+							else if (choice == "no") {
+								players[i].SetFlag(false);
+								break;
+							}
+							else {
+								cout << "\nОшибка ввода\n";
+								Sleep(1000);
+							}
+							system("cls");
+						}
+					}
+					system("cls");
+					continue;
+				}
+				cout << "\n\nХОД: ИГРОК " << i + 1 << "\nВведите действие (? - Справка): ";
+				cin >> action;
+				if (action == "surrender" && counter == 0) {
+					players[i].surrender = true;
+					system("cls");
+					players[i].SetFlag(false);
+					continue;
+				}
+				else if (action == "surrender" && counter != 0) {
+					cout << "\nСдачу произвести нельзя\n";
+					Sleep(1000);
+					flag = true;
+				}
+				else if (action == "double" && counter == 0) {
+					players[i].SetBet(players[i].GetBet() * 2);
+					players[i].AddCard(shoe);
+					players[i].SetFlag(false);
+					system("cls");
+					continue;
+				}
+				else if (action == "double" && counter != 0) {
+					cout << "\nДабл произвести нельзя\n";
+					Sleep(1000);
+					flag = true;
+				}
+				else if (action == "stand") {
+					players[i].SetFlag(false);
+					system("cls");
+					continue;
+				}
+				else if (action == "hit") {
+					players[i].AddCard(shoe);
+					flag = true;
+					if (players[i].SumCards() > 21) {
+						system("cls");
+						players[i].SetFlag(false);
+						flag = false;
+					}
+				}
+				else if (action == "?") {
+					system("cls");
+					cout << "\nКОМАНДЫ\n";
+					cout << "\nhit - Добавить карту.\n";
+					cout << "\nstand - Стоп. Переход к следующему игроку.\n";
+					cout << "\nsurrender - Сдаться. Теряется половина ставки. Можно использовать только в начале хода.\n";
+					cout << "\ndouble - Удвоить ставку. Добавляется только одна карта. Можно использовать только в начале хода.\n";
+					Sleep(5000);
+					system("cls");
+					counter--;
+					flag = true;
+				}
+				else {
+					flag = true;
+				}
+				counter++;
+				system("cls");
+			}
+		}
+		if (dealer.SumCards() == 21) {
+			dealer.SetBlackjack(true);
+		}
+		while (dealer.SumCards() < 17) {
+			dealer.AddCard(shoe);
+		}
+		ShowTable(true);
+		Sleep(3000);
+		system("cls");
+		Result();
+	}
+	void Result() {
+		cout << "\nРЕЗУЛЬТАТЫ:\n";
+		for (int i{}; i < numPlayer; i++) {
+			if (players[i].surrender == true) {
+				cout << "\nИГРОК " << i + 1 << "\t" << -(players[i].GetBet() / 2) << "$";
+			}
+			else if ((dealer.GetBlackjack() == true) && (players[i].GetBlackjack() == true)) {
+				if (players[i].choice == "yes") cout << "\nИГРОК " << i + 1 << "\t" << players[i].GetBet() << "$";
+				else cout << "\nИГРОК " << i + 1 << "\t" << 0 << "$";
+			}
+			else if ((dealer.GetBlackjack() == true) && (players[i].GetBlackjack() == false)) {
+				cout << "\nИГРОК " << i + 1 << "\t" << -players[i].GetBet() << "$";
+			}
+			else if ((dealer.GetBlackjack() == false) && (players[i].GetBlackjack() == true)) {
+				if (players[i].choice == "yes") cout << "\nИГРОК " << i + 1 << "\t" << players[i].GetBet() << "$";
+				else cout << "\nИГРОК " << i + 1 << "\t" << players[i].GetBet() * 1.5 << "$";
+			}
+			else if (players[i].SumCards() > 21) {
+				cout << "\nИГРОК " << i + 1 << "\t" << -players[i].GetBet() << "$";
+			}
+			else if ((players[i].SumCards() < 21) && (dealer.SumCards() <= 21) && (dealer.SumCards() > players[i].SumCards())) {
+				cout << "\nИГРОК " << i + 1 << "\t" << -players[i].GetBet() << "$";
+			}
+			else if ((players[i].SumCards() <= 21) && (dealer.SumCards() < 21) && (dealer.SumCards() < players[i].SumCards())) {
+				cout << "\nИГРОК " << i + 1 << "\t" << players[i].GetBet() << "$";
+			}
+			else if ((players[i].SumCards() == dealer.SumCards()) && (players[i].GetBlackjack() == false)) {
+				cout << "\nИГРОК " << i + 1 << "\t" << 0 << "$";
+			}
+			else if ((players[i].SumCards() <= 21) && (dealer.SumCards() > 21)) {
+				cout << "\nИГРОК " << i + 1 << "\t" << players[i].GetBet() << "$";
+			}
+		}
+		cout << endl << endl;
+		system("pause");
+	}
+	~Game(){ delete[] players; }
+};
+
+int main()
+{
+	srand(time(0));
+	setlocale(LC_ALL, "");
+	char choice = '0';
+	bool flag = true;
+	while (true)
+	{
+		Game game;
+		game.Begin();
+		game.GamePlay();
+		flag = true;
+		while (flag == true)
+		{
+			system("cls");
+			cout << "\nНачать новую игру?\n";
+			cin >> choice;
+			switch (choice)
+			{
+			case 'y':
+				flag = false;
+				break;
+			case 'n':
+				exit(0);
+				break;
+			default:
+				cout << "\nОшибка ввода\n";
+				break;
+			}
+			system("cls");
+		}
+		system("cls");
+	}
+	//На страховку, сплит и бонусы уже просто сил не хватает
+}

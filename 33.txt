@@ -1,0 +1,107 @@
+#include <iostream>
+using namespace std;
+
+/*
+Задание 1
+Создайте класс с именем Time для хранения времени.
+В классе должна быть функция-член, которая даёт приращение времени, хранящееся в объекте Time, равное 1 секунде.
+Напишите соответствующие конструкторы и функции-члены.
+В классе должны быть перегружены операции
+>>, <<, =, +=, -=, ().
+Используйте обычную и дружественную перегрузку.
+*/
+
+class Time {
+private:
+    int hour;
+    int minute;
+    int second;
+public:
+    Time& giveSecond() {
+        second += 1;
+        if (second == 60) {
+            minute += 1;
+            second = 0;
+        }
+        if (minute == 60) {
+            hour += 1;
+            minute = 0;
+        }
+        return *this;
+    }
+    Time& operator+=(int second) {
+        this->second = (hour * 3600 + minute * 60 + this->second) + second;
+        hour = this->second / 3600;
+        minute = this->second - hour * 3600;
+        int x = minute;
+        minute /= 60;
+        this->second = x - minute * 60;
+        return *this;
+    }
+    Time& operator-=(int second) {
+        if ((hour * 3600 + minute * 60 + this->second) - second < 0) {
+            cout << "\nThe operation is impossible\n";
+        }
+        else {
+            this->second = (hour * 3600 + minute * 60 + this->second) - second;
+            hour = this->second / 3600;
+            minute = this->second - hour * 3600;
+            int x = minute;
+            minute /= 60;
+            this->second = x - minute * 60;
+            return *this;
+        }
+    }
+    Time& operator()(int hour, int minute, int second) {
+        this->hour = hour;
+        this->minute = minute;
+        this->second = second;
+        return *this;
+    }
+    Time& operator=(Time& time) {
+        hour = time.hour;
+        minute = time.minute;
+        second = time.second;
+        return *this;
+    }
+    friend istream& operator>>(istream& input, Time& time) {
+        cout << "Enter the time" << endl;
+        cout << "Hour(s): ";
+        cin >> time.hour;
+        cout << "Minute(s): ";
+        cin >> time.minute;
+        cout << "Second(s): ";
+        cin >> time.second;
+        return input;
+    }
+    friend ostream& operator<<(ostream& output, const Time& time) {
+        time.hour < 10 ? cout << "0" << time.hour : cout << time.hour;
+        cout << ":";
+        time.minute < 10 ? cout << "0" << time.minute : cout << time.minute;
+        cout << ":";
+        time.second < 10 ? cout << "0" << time.second : cout << time.second;
+        cout << endl;
+        return output;
+    }
+    Time(int hour, int minute, int second) : hour{ hour }, minute{ minute }, second{ second }{}
+    Time() : Time{ 0,0,0 } {}
+};
+
+int main()
+{
+    Time time1(2, 10, 0);
+    Time time2(3, 11, 20); 
+    cout << time1 << time2;
+    time2 = time1;
+    cout << endl;
+    cout << time1 << time2;
+    cout << endl;
+    time1.giveSecond();
+    cout << time1;
+    time1 += 3700;
+    cout << time1;
+    time1 -= 3700;
+    cout << time1;
+    time1(1, 20, 40);
+    cout << time1;
+}

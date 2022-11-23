@@ -1,0 +1,84 @@
+#include <iostream>
+#include <windows.h>
+using namespace std;
+
+/*
+Задание 1.
+Создайте класс: Банан
+Переменные класса: вес, цвет.
+Вывести кол-во бананов в вашей программе(используя static переменную). А так же банан должен
+поменять характеристики, если он весил 300 грамм и цвет его был
+желтым, его характеристики меняются через n-ое количество времи на 200 грамм и цвет коричневый.
+
+Кол-во переменных класса указано примерно и их кол-во вы можете изменить.
+*/
+
+class Banana {
+private:
+    string color;
+    int_fast16_t weight;
+    int_fast16_t& Count() { static int_fast16_t c{ 0 }; return c; }
+public:
+    void setColor(string _color) { color = _color; }
+    void setWeight(int_fast16_t _weight) { weight = _weight; }
+    string getColor() { return color; }
+    int_fast16_t getWeight() { return weight; }
+    void showCounter() { cout << Count(); }
+    Banana(string _color, int_fast16_t _weight) : color{ _color }, weight{ _weight } { ++Count(); }
+    Banana() : Banana{"Желтый", 200} {}
+    ~Banana() { --Count(); }
+};
+
+void showBanana(int_fast16_t number, Banana* banana, string color, int_fast16_t weight) {
+    system("cls");
+    cout << "Номер\t\tЦвет\t\tВес" << endl;
+    for (int i{}; i < number; i++) {
+        banana[i].setColor(color);
+        banana[i].setWeight(weight);
+        if (color == "Коричневый")
+            cout << i + 1 << "\t\t" << banana[i].getColor() << "\t" << banana[i].getWeight() << "г." << endl;
+        else
+            cout << i + 1 << "\t\t" << banana[i].getColor() << "\t\t" << banana[i].getWeight() << "г." << endl;
+    }
+}
+
+void wait() {
+    Sleep(2000);
+    system("cls");
+    cout << "\n\n\tFew moments later...";
+    Sleep(1500);
+    system("cls");
+}
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    int_fast16_t number{};
+    cout << "Введите количество бананов: ";
+    cin >> number;
+    Banana* banana = new Banana[number];
+
+    Sleep(1500);
+    showBanana(number, banana, "Желтый", 200);
+    cout << "Количество бананов: ";
+    banana[0].showCounter();
+
+    wait();
+
+    showBanana(number, banana, "Коричневый", 175);
+    cout << "Количество бананов: ";
+    banana[0].showCounter();
+
+    wait();
+
+    showBanana(number, banana, "Черный", 150);
+    cout << "Количество бананов: ";
+    banana[0].showCounter();
+    delete[] banana;
+    Sleep(2000);
+    system("cls");
+    cout << "\n\n\tВсе сгнило" << endl;
+    cout << "\n  Количество бананов: ";
+    banana[0].showCounter();
+    Sleep(2000);
+}

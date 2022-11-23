@@ -1,0 +1,61 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    /*
+    Задание 1. 
+    Даны два массива: А[M] и B[N] (M и N вводятся
+    с клавиатуры). Необходимо создать третий массив минимально возможного размера, 
+    в котором нужно собрать элементы массива A, 
+    которые не включаются в массив B, без повторений.
+    */
+    int size1{}, size2{}, count{}, index{};
+    cout << "Введите размер первого массива: ";
+    cin >> size1;
+    cout << "Введите размер второго массива: ";
+    cin >> size2;
+    int* arr1 = new int[size1];
+    int* arr2 = new int[size2];
+    int* arr3 = new int[size1+size2];
+    cout << "Введите элементы первого массива: " << endl;
+    for (int i{}; i < size1; i++) {
+        cin >> arr1[i];
+    }
+    cout << "Введите элементы второго массива: " << endl;
+    for (int i{}; i < size2; i++) {
+        cin >> arr2[i];
+    }
+    for (int i{}; i < size1; i++) {
+        count = 0;
+        for (int j{}; j < size2;j++) {
+            if (arr1[i] != arr2[j]) count++;
+        }
+        if (count == size2) {
+            arr3[index] = arr1[i];
+            index++;
+        }
+    }
+    delete[] arr1;
+    delete[] arr2;
+    int size4{};
+    int* arr4 = new int[index];
+    arr4[size4] = arr3[0];
+    for (int i{}; i < index; i++) {
+        if (arr3[i] != arr4[size4]) {
+            arr4[size4 + 1] = arr3[i];
+            size4++;
+        }
+    }
+    delete[] arr3;
+    int* arr5 = new int[size4 + 1];
+    cout << "Итоговый массив: ";
+    for (int i{}; i <= size4; i++) {
+        arr5[i] = arr4[i];
+        cout << arr5[i] << " ";
+    }
+    delete[] arr4;
+    delete[] arr5;
+}

@@ -1,0 +1,19 @@
+#include <iostream>
+using namespace std;
+
+/*
+Задание №1
+Напишите шаблон функции, которая возвращает максимум из
+двух переданных параметров
+*/
+
+template <typename T1, typename T2>
+float MaxValue(T1 num1, T2 num2) {
+    if (num1 > num2) { return num1; }
+    else { return num2; }
+}
+
+int main()
+{
+    cout << MaxValue(8.5, 5);
+}

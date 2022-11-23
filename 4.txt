@@ -1,0 +1,38 @@
+#include <iostream>
+using namespace std;
+
+/*
+Задание 1. Дополните свою библиотеку функций реализациями нижеследующих функций:
+■ int mystrcmp (const char * str1, const char * str2); —
+функция сравнивает две строки, и , если строки равны
+возвращает 0, если первая строка больше второй, то
+возвращает 1, иначе –1.
+*/
+
+int mystrcmp(const char* str1,const char* str2)
+{
+    (str1 && str2);
+    do
+    {
+        if (*str1 > *str2) return 1; 
+        if (*str1 < *str2) return -1; 
+    } while (*str1++ && *str2++);
+    return 0; 
+}
+
+int main()
+{
+    setlocale(LC_ALL, "");
+
+    const char* a = "abc";
+    const char* b = "abc";
+    cout << mystrcmp(a,b) << endl;
+
+    const char* c = "abc1";
+    const char* d = "abc";
+    cout << mystrcmp(c, d) << endl;
+
+    const char* e = "abc";
+    const char* f = "abc1";
+    cout << mystrcmp(e, f);
+}

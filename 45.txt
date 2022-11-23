@@ -1,0 +1,19 @@
+#include <vector> 
+#include <iostream>
+#include <bitset>
+
+std::vector<int> showBits(int n) {
+	std::string binaryStr = std::bitset<32>(n).to_string();
+	std::vector <int> binaryVec;
+	for (int i{}; i < 32; i++) {
+		binaryVec.push_back(binaryStr[i] - '0');
+	}
+	return binaryVec;
+}	
+
+int main() {
+	std::vector <int> binaryVec = showBits(-10);
+	for (int a : binaryVec) {
+		std::cout << a << ' ';
+	}
+}

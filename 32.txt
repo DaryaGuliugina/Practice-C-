@@ -1,0 +1,76 @@
+#include <iostream>
+using namespace std;
+
+/*
+Задание 1
+Создайте класс «Комплексное число» - Complex. Класс должен
+содержать несколько конструкторов.
+Класс должен иметь возможность вводить и выводить комплексные
+числа посредством перегруженных операций >> и <<.
+Перегрузите операции !=, ==, ().
+Используйте обычную и дружественную перегрузку.
+*/
+
+class Complex {
+private:
+    int realPart;
+    int imaginaryPart;
+public:
+    friend bool operator==(const Complex& number1, const Complex& number2) {
+        return number1.realPart == number2.realPart && number1.imaginaryPart == number2.imaginaryPart;
+    }
+    friend bool operator!=(const Complex& number1, const Complex& number2) {
+        return !(number1.realPart == number2.realPart && number1.imaginaryPart == number2.imaginaryPart);
+    }
+    Complex& operator() (int number1, int number2) {
+        this->realPart = number1;
+        this->imaginaryPart = number2;
+        return *this;
+    }
+    friend istream& operator>> (istream& input, Complex& number) {
+        cout << "\nВведите действительную часть: ";
+        input >> number.realPart;
+        cout << "\nВведите мнимую часть: ";
+        input >> number.imaginaryPart;
+        return input;
+    }
+    friend ostream& operator<< (ostream& output, const Complex& number)
+    {
+        if (number.imaginaryPart == 0) {
+            output << number.realPart;
+        }
+        else if (number.realPart == 0) {
+            output << number.imaginaryPart << "i";
+        }
+        else if (number.imaginaryPart < 0) {
+            output << number.realPart << " - " << -(number.imaginaryPart) << "i";
+        }
+        else {
+            output << number.realPart << " + " << number.imaginaryPart << "i";
+        }
+        return output;
+    }
+    Complex(int realPart, int imaginaryPart) : realPart{ realPart }, imaginaryPart{ imaginaryPart }{}
+    Complex() : Complex{ 0, 0 } {}
+};
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    Complex number1;
+    Complex number2;
+    cin >> number1;
+    cin >> number2;
+    bool equal = number1 == number2;
+    bool inequality = number1 != number2;
+    cout << "Число 1: " << number1 << endl;
+    cout << "Число 2: " << number2 << endl;
+    cout << "Оператор ==: " << endl;
+    equal == 1 ? cout << "Комплексные числа равны" << endl : cout << "Комплексные числа не равны" << endl;
+    cout << "Оператор !=: " << endl;
+    inequality == 0 ? cout << "Комплексные числа равны" << endl : cout << "Комплексные числа не равны" << endl;
+    number1(1, 1);
+    number2(2, 2);
+    cout << "Число 1: " << number1 << endl;
+    cout << "Число 2: " << number2 << endl;
+}

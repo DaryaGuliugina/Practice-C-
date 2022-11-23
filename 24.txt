@@ -1,0 +1,68 @@
+#include <iostream>
+using namespace std;
+
+/*
+Задание №1
+Реализуйте класс “Точка”. Необходимо хранить координаты
+x, y, z в переменных-членах класса. Реализуйте функции-члены
+класса для ввода данных, вывода данных, реализуйте аксессоры для доступа к переменным-членам
+К уже реализованному классу Точка добавьте необходимые
+конструкторы, сделайте ряд функций inline, используйте инициализаторы
+*/
+
+class Point {
+private:
+    int x;
+    int y;
+    int z;
+public:
+    //аксессоры
+    //Определение функции-члена класса в теле класса делает ее inline - функцией.
+    int getX() {
+        return x;
+    }
+    int getY() {
+        return y;
+    }
+    int getZ() {
+        return z;
+    }
+    //метод ввода данных
+    void InitCoord();
+    //метод вывода данных
+    void ShowCoord();
+    //конструкторы
+    Point() {}
+    Point(int _x, int _y, int _z) {
+        x = _x;
+        y = _y;
+        z = _z;
+    }
+};
+
+//метод ввода данных
+void Point::InitCoord() {
+    cout << "Введите x: ";
+    cin >> x;
+    cout << "Введите y: ";
+    cin >> y;
+    cout << "Введите z: ";
+    cin >> z;
+}
+//метод вывода данных
+void Point::ShowCoord() {
+    cout << "Координаты: " << endl;
+    cout << "X: " << x << endl;
+    cout << "Y: " << y << endl;
+    cout << "Z: " << z << endl;
+}
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    Point point1;
+    point1.InitCoord();
+    point1.ShowCoord();
+    Point point2(1, 3, 2);
+    point2.ShowCoord();
+}

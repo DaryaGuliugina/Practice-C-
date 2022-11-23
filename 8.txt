@@ -1,0 +1,38 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "");
+
+    const int n = 6;
+    int arr[n]{ 1,2,3,4,5,6 };
+    int* parr{};
+    parr = arr;
+
+    /*
+    Пояснение.
+    индекс 0 не относится к четным или нечетным, 
+    поэтому элемент с данным индексом остается на месте.
+    В случае, если последний элемент массива имеет нечетный индекс,
+    то он также остается на месте, поскольку не имеет пары.
+    */
+
+    for (int i{}; i < n; i++) {
+        cout << *(parr + i) << " ";
+    }
+    cout << endl;
+
+    for (int i{ 1 }; i < n; i++) {
+        if (i % 2 == 1) {
+            if (i == n - 1) break;
+            swap(*(parr + i), *(parr + i + 1));
+        }
+    }
+
+    for (int i{}; i < n; i++) {
+        cout << *(parr + i) << " ";
+    }
+
+
+}

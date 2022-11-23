@@ -1,0 +1,134 @@
+#include <iostream>
+#include <string.h>
+#include <time.h>
+using namespace std;
+class QueueRing
+{
+    //Очередь
+    int* Wait;
+    //Максимальный размер очереди
+    int MaxQueueLength;
+    //Текущий размер очереди
+    int QueueLength;
+public:
+    //Конструктор
+    QueueRing(int m);
+    //Деструктор
+    ~QueueRing();
+    //Добавление элемента
+    void Add(int c);
+    //Извлечение элемента
+    bool Extract();
+    //Очистка очереди
+    void Clear();
+    //Проверка существования элементов в очереди
+    bool IsEmpty();
+    //Проверка на переполнение очереди
+    bool IsFull();
+    //Количество элементов в очереди
+    int GetCount();
+    //демонстрация очереди
+    void Show();
+};
+
+class QueuePriority
+{
+    //Очередь
+    int* Wait;
+    //Приоритет
+    int* Pri;
+    //Максимальный размер очереди
+    int MaxQueueLength;
+    //Текущий размер очереди
+    int QueueLength;
+public:
+    //Конструктор
+    QueuePriority(int m);
+    //Деструктор
+    ~QueuePriority();
+    //Добавление элемента
+    void Add(int c);
+    //Извлечение элемента
+    bool Extract();
+    //Очистка очереди
+    void Clear();
+    //Проверка существования элементов в очереди
+    bool IsEmpty();
+    //Проверка на переполнение очереди
+    bool IsFull();
+    //Количество элементов в очереди
+    int GetCount();
+    //демонстрация очереди
+    void Show();
+};
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    QueueRing queue1(7);
+    for (int i{}; i < 7; i++) queue1.Add(i);
+    queue1.Show();
+    queue1.Extract();
+    queue1.Show();
+}
+
+QueueRing::QueueRing(int m)
+{
+    MaxQueueLength = m;
+    Wait = new int[MaxQueueLength];
+    QueueLength = 0;
+}
+QueueRing::~QueueRing()
+{
+    delete[] Wait;
+}
+void QueueRing::Add(int c)
+{
+    if (!IsFull()) Wait[QueueLength++] = c;
+    else cout << "\nОчередь переполнена\n";
+}
+bool QueueRing::Extract()
+{
+    if (!IsEmpty()) {
+        int temp = Wait[0];
+        for (int i{ 1 }; i < QueueLength; i++) {
+            Wait[i - 1] = Wait[i];
+        }
+        Wait[QueueLength - 1] = temp;
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+void QueueRing::Clear()
+{
+    QueueLength = 0;
+}
+bool QueueRing::IsEmpty()
+{
+    return QueueLength == 0;
+}
+bool QueueRing::IsFull()
+{
+    return QueueLength == MaxQueueLength;
+}
+int QueueRing::GetCount()
+{
+    return QueueLength;
+}
+void QueueRing::Show()
+{
+    if (!IsEmpty())
+        for (int i{}; i < QueueLength; i++) cout << Wait[i] << ' ';
+    else cout << "\nОчередь пуста\n";
+    cout << endl;
+}
+
+QueuePriority::QueuePriority(int m)
+{
+    MaxQueueLength = m;
+    QueueLength = 0;
+    Wait = new int[MaxQueueLength];
+    Pri = new int[MaxQueueLength];
+}

@@ -1,0 +1,104 @@
+#include <iostream>
+#include <windows.h>
+#include <queue>
+using namespace std;
+
+/*
+Задание 1.
+Создать имитационную модель "остановка маршрутных такси". Необходимо вводить следующую информацию:
+среднее время между появлениями пассажиров на остановке в разное время суток, среднее время между появлениями маршруток на остановке в разное время суток,
+тип остановки (конечная или нет). Необходимо определить: среднее время пребывание человека на остановке,
+достаточный интервал времени между приходами маршруток, чтобы на остановке находилось не более N людей одновременно. 
+Количество свободных мест в маршрутке является случайной величиной.
+*/
+
+void busStop(int firstTime, int lastTime, int &arrivalOfPassengers, int arrivalOfBus, bool isFinalStop, 
+	queue <char> &passengers, queue <int> &arrivalAtStop, queue <int> &leaveStop, queue <int> &numberOfFreeSeats) {
+	int freeSeats{};
+	for (int i{ firstTime }; i < lastTime; i++) {
+		if (i % arrivalOfPassengers == 0 && i != 0) {
+			passengers.push('p');
+			arrivalAtStop.push(i);
+		}
+		if (i % arrivalOfBus == 0 && i != 0) {
+			if (isFinalStop == 1)
+				freeSeats = 20;
+			else 
+				freeSeats = rand() % 20;
+			numberOfFreeSeats.push(freeSeats);
+			while (freeSeats != 0) {
+				if (!passengers.empty()) {
+					passengers.pop();
+					leaveStop.push(i);
+				}
+				freeSeats--;
+			}
+		}
+	}
+}
+
+int main()
+{
+	srand(time(0));
+	setlocale(LC_ALL, "");
+	int arrivalOfPassengers{}, arrivalOfBus{};
+	int freeSeats{};
+	int N{};
+	int arrayOfTime[3]{};
+	bool isFinalStop{};
+	queue <char> passengers;
+	queue <int> arrivalAtStop;
+	queue <int> leaveStop;
+	queue <int> timeOfStay;
+	queue <int> numberOfFreeSeats;
+	cout << "Выберите конечная остановка (1) или нет (0): ";
+	cin >> isFinalStop;
+	cout << "Введите среднее время между появлениями пассажиров на остановке утром (6:00 - 9:00) (мин): ";
+	cin >> arrivalOfPassengers;
+	cout << "Введите среднее время между появлениями маршруток на остановке утром (6:00 - 9:00) (мин): ";
+	cin >> arrivalOfBus;
+	busStop(0, 180, arrivalOfPassengers, arrivalOfBus, isFinalStop, passengers, arrivalAtStop, leaveStop, numberOfFreeSeats);
+	arrayOfTime[0] = arrivalOfPassengers;
+	cout << "Введите среднее время между появлениями пассажиров на остановке днем (9:00 - 16:00) (мин): ";
+	cin >> arrivalOfPassengers;
+	cout << "Введите среднее время между появлениями маршруток на остановке днем (9:00 - 16:00) (мин): ";
+	cin >> arrivalOfBus;
+	busStop(180, 600, arrivalOfPassengers, arrivalOfBus, isFinalStop, passengers, arrivalAtStop, leaveStop, numberOfFreeSeats);
+	arrayOfTime[1] = arrivalOfPassengers;
+	cout << "Введите среднее время между появлениями пассажиров на остановке вечером (16:00 - 23:00) (мин): ";
+	cin >> arrivalOfPassengers;
+	cout << "Введите среднее время между появлениями маршруток на остановке вечером (16:00 - 23:00) (мин): ";
+	cin >> arrivalOfBus;
+	busStop(600, 1021, arrivalOfPassengers, arrivalOfBus, isFinalStop, passengers, arrivalAtStop, leaveStop, numberOfFreeSeats);
+	arrayOfTime[2] = arrivalOfPassengers;
+	arrivalOfPassengers = (arrayOfTime[0] + arrayOfTime[1] + arrayOfTime[2]) / 3;
+	cout << "Вычислить интервал времени между появлениями маршруток, чтобы человек на остановке было не более: ";
+	while (N <= 0) {
+		cin >> N;
+	}
+	int numberOfPassengers{}, sumOfTime{};
+	while (!arrivalAtStop.empty() && !leaveStop.empty()) {
+		timeOfStay.push(leaveStop.front() - arrivalAtStop.front());
+		arrivalAtStop.pop();
+		leaveStop.pop();
+	}
+	while (!timeOfStay.empty()) {
+		sumOfTime += timeOfStay.front();
+		timeOfStay.pop();
+		numberOfPassengers++;
+	}
+	system("cls");
+	cout << endl << "Среднее время пребывания человека на остановке: " << sumOfTime / numberOfPassengers << " мин." << endl;
+
+	int sumFreeSeats{};
+	int numberOfBuses{};
+	while (!numberOfFreeSeats.empty()) {
+		sumFreeSeats += numberOfFreeSeats.front();
+		numberOfFreeSeats.pop();
+		numberOfBuses++;
+	}
+
+	float passengerFlow = static_cast<float>(1) / arrivalOfPassengers;
+	int intervalBetweenBuses = ((sumFreeSeats / numberOfBuses) + N) / (passengerFlow * 2);
+	cout << "Достаточный интервал времени между приходами маршруток, чтобы на остановке находилось не более " << N << " людей одновременно: " << intervalBetweenBuses << " мин." << endl;
+}

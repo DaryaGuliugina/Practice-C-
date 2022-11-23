@@ -1,0 +1,126 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+const int SIZE{ 20 };
+const int SIZE1{ 10 };
+
+int converter(int binary_number);
+void init_array(int array_of_numbers[]);
+void show_array(int array_of_numbers[], int size);
+void linear(int array_of_numbers[], int key);
+int binary(int array_of_values[], int key);
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    srand(time(NULL));
+
+    int choise{};
+    //task 1
+    int array_of_numbers[SIZE]{};
+    int key{};
+    //task 2
+    int array_of_values[SIZE1]{ 20,17,56,78,2,90,93,4,12,65 };
+    int key1{}, index{};
+    //task 3
+    int binary_number{}, decimal_number{};
+
+    cout << "1 - Задача 1" << endl;
+    cout << "2 - Задача 2" << endl;
+    cout << "3 - Задача 3" << endl;
+    cout << "0 - Выход" << endl;
+
+    do {
+        cout << "\nВведите номер задачи: ";
+        cin >> choise;
+        switch (choise)
+        {
+        case 1:
+            //task1
+            init_array(array_of_numbers);
+            show_array(array_of_numbers, SIZE);
+            cout << "\n\nВведите ключ : ";
+            cin >> key;
+            linear(array_of_numbers, key);
+            break;
+        case 2:
+            //task2
+            cout << "Изначальный массив: ";
+            show_array(array_of_values, SIZE1);
+            sort(array_of_values, array_of_values + SIZE1);
+            cout << endl << "Отсортированный массив: ";
+            show_array(array_of_values, SIZE1);
+            cout << endl << "Введите ключ: ";
+            cin >> key1;
+            cout << endl;
+            index = binary(array_of_values, key1);
+            index == -1 ? cout << "Ключ " << key1 << " не найден в массиве" << endl: cout << "Ключ " << key1 << " находится в ячейке " << index << endl;
+            break;
+        case 3:
+            //task3
+            cout << "Двоичное число: ";
+            cin >> binary_number;
+            decimal_number = converter(binary_number);
+            cout << "Десятичное число: " << decimal_number << endl;
+            break;
+        default:
+            break;
+        }
+    }while (choise != 0);
+}
+
+int converter(int binary_number) {
+    int decimal_number{};
+    for (int i{}; binary_number; i++)
+    {
+        decimal_number += binary_number % 10 * pow(2, i);
+        binary_number /= 10;
+    }
+    return decimal_number;
+}
+
+void init_array(int array_of_numbers[]) {
+    for (int i = 0; i < SIZE; i++) {
+        array_of_numbers[i] = 1 + rand() % 20;
+    }
+}
+
+void show_array(int array_of_numbers[], int size) {
+    for (int i = 0; i < size; i++) {
+        cout << array_of_numbers[i] << " ";
+    }
+}
+
+void linear(int array_of_numbers[], int key) {
+    int array_of_indexes[SIZE]{};
+    int h{};
+    for (int i = 0; i < SIZE; i++) {
+        if (array_of_numbers[i] == key) {
+            array_of_indexes[h++] = i;
+        }
+    }
+    if (h != 0) {
+        for (int i = 0; i < h; i++) {
+            cout << "Ключ " << key << " находится в ячейке " << array_of_indexes[i] << endl;
+        }
+    }
+    else {
+        cout << "Ключ " << key << " не найден в массиве" << endl;
+    }
+}
+
+int binary(int array_of_values[], int key) {
+    int l = 0;
+    int r = SIZE1;
+    int mid;
+    while (l < r) {
+        mid = (l + r) / 2;
+
+        if (array_of_values[mid] > key) r = mid;
+        else l = mid + 1;
+    }
+    r--;
+    if (array_of_values[r] == key) return r;
+    else return -1;
+}

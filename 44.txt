@@ -1,0 +1,146 @@
+#include <iostream>
+#include <windows.h>
+#include <string>
+using namespace std;
+/*
+Создайте класс Student, который будет содержать
+информацию о студенте. С помощью механизма наследования, реализуйте класс Aspirant  (аспирант —
+студент, который готовится к защите кандидатской
+работы) производный от Student.
+*/
+struct date {
+	int day;
+	int month;
+	int year;
+};
+
+class Student {
+protected:
+	string name;
+	string surname;
+	date birthday;
+	bool gender;
+	string group;
+	string speciality;
+public:
+	void setName(string name_);
+	void setSurname(string surname_);
+	void setBirthday(date birthday_);
+	void setGender(bool gender_);
+	void setGroup(string group_);
+	void setSpeciality(string speciality_);
+
+	string getName();
+	string getSurname();
+	date getBirthday();
+	bool getGender();
+	string getGroup();
+	string getSpeciality();
+
+	Student() {}
+	Student(string name_, string surname_, date birthday_, bool gender_, string group_, string speciality_) :
+		name{ name_ }, surname{ surname_ }, birthday{ birthday_ }, gender{ gender_ }, group{ group_ }, speciality{speciality_} {}
+};
+
+class Aspirant : public Student {
+private:
+	string candidateDissertationTopic;
+	string coordinatorName;
+	string coordinatorSurname;
+public:
+	void setCandidateDissertationTopic(string);
+	void setCoordinatorName(string);
+	void setCoordinatorSurname(string);
+	void print();
+
+	string getCandidateDissertationTopic();
+	string getCoordinatorName();
+	string getCoordinatorSurname();
+
+	Aspirant() {}
+	Aspirant(string name_, string surname_, date birthday_, bool gender_, string group_, string speciality_, 
+		string candidateDissertationTopic_, string coordinatorName_, string coordinatorSurname_) :
+		Student (name_, surname_, birthday_, gender_, group_, speciality_) {
+		candidateDissertationTopic = candidateDissertationTopic_;
+		coordinatorName = coordinatorName_;
+		coordinatorSurname = coordinatorSurname_;
+	}
+};
+
+int main()
+{
+	setlocale(LC_ALL, "");
+	date birthday1{ 1,8,1997 };
+	Aspirant aspirant1("Иван", "Иванов", birthday1, 1, "BV112", "Экономика", "Бухгалтерский учет, анализ и аудит на предприятии", "Евгений", "Евгениев");
+	aspirant1.print();
+}
+
+void Student::setName(string name_) {
+	name = name_;
+}
+void Student::setSurname(string surname_) {
+	surname = surname_;
+}
+void Student::setBirthday(date birthday_) {
+	birthday = birthday_;
+}
+void Student::setGender(bool gender_) {
+	gender = gender_;
+}
+void Student::setGroup(string group_) {
+	group = group_;
+}
+void Student::setSpeciality(string speciality_) {
+	speciality = speciality_;
+}
+
+string Student::getName() {
+	return name;
+}
+string Student::getSurname() {
+	return surname;
+}
+date Student::getBirthday() {
+	return birthday;
+}
+bool Student::getGender() {
+	return gender;
+}
+string Student::getGroup() {
+	return group;
+}
+string Student::getSpeciality() {
+	return speciality;
+}
+
+void Aspirant::setCandidateDissertationTopic(string candidateDissertationTopic_) {
+	candidateDissertationTopic = candidateDissertationTopic_;
+}
+void Aspirant::setCoordinatorName(string coordinatorName_) {
+	coordinatorName = coordinatorName_;
+}
+void Aspirant::setCoordinatorSurname(string coordinatorSurname_) {
+	coordinatorSurname = coordinatorSurname_;
+}
+
+string Aspirant::getCandidateDissertationTopic() {
+	return candidateDissertationTopic;
+}
+string Aspirant::getCoordinatorName() {
+	return coordinatorName;
+}
+string Aspirant::getCoordinatorSurname() {
+	return coordinatorSurname;
+}
+
+void Aspirant::print() {
+	cout << "Имя: " << name << endl;
+	cout << "Фамилия: " << surname << endl;
+	cout << "Дата рождения: " << birthday.day << "." << birthday.month << "." << birthday.year << endl;
+	(gender) ? cout << "Пол: Мужской" << endl : cout << "Пол: Женский" << endl;
+	cout << "Группа: " << group << endl;
+	cout << "Специальность: " << speciality << endl;
+	cout << "Тема кандидатской работы: " << candidateDissertationTopic << endl;
+	cout << "Имя координатора: " << coordinatorName << endl;
+	cout << "Фамилия координатора: " << coordinatorSurname << endl;
+}

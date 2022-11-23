@@ -1,0 +1,361 @@
+#include <iostream>
+#include <algorithm>
+#include <windows.h>
+#include <string>
+using namespace std;
+
+struct arr
+{
+    int index;
+    int* buf;
+};
+
+void Students();
+void PrintArr(int* ptr[], int n, int m);
+void DeleteArr(int* ptr[], int n);
+bool ValueArr(int* ptr[], int n, int m, int k);
+bool ValueArr1(int* ptr, int n, int k);
+arr CommonElements(int n, int m, int** A, int** B);
+arr UniqueElements(int n, int m, int** A, int** B);
+arr RemovingDuplicates(int index, int* buf);
+void FinalArr1(int index1, int index2, int* buf1, int* buf2);
+void FinalArr2(int index1, int index2, int* buf1, int* buf2);
+void NegativeElements(int** A, int** B, int** C, int n, int m);
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    srand(time(NULL));
+
+    /*
+    Задание 1. Написать программу, которая дает пользователю ввести 5 фамилий студентов,
+    а затем сортирует их по возрастанию.
+    */
+
+    Students();
+
+    /*
+    Задание 2. Есть 3 двумерных массива A, B, C. Количество
+    строк и столбцов для них вводит пользователь с клавиатуры для каждого из них. Реализуйте
+    ■ Создайте одномерный массив, который содержит
+    общие значения для A, B, C;
+    ■ Создайте одномерный массив, который содержит
+    уникальные значения для A, B, C;
+    ■ Создайте одномерный массив, который содержит
+    общие значения для A и C;
+    ■ Создайте одномерный массив, который содержит 
+    */
+    int n{}, m{};
+    cout << " \nВведите количество строк: ";
+    cin >> n;
+    cout << " \nВведите количество столбцов: ";
+    cin >> m;
+
+    int** A; 
+    int** B; 
+    int** C; 
+
+    A = new int* [n]; 
+    B = new int* [n]; 
+    C = new int* [n]; 
+
+    for (int i = 0; i < m; i++)
+    {
+        A[i] = new int[m];
+        B[i] = new int[m];
+        C[i] = new int[m];
+    }
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++)
+        {
+            A[i][j] = -20 + rand() % 41;
+            B[i][j] = -20 + rand() % 41;
+            C[i][j] = -20 + rand() % 41;
+        }
+    }
+
+    cout << endl << "Массив A" << endl;
+    PrintArr(A, n, m);
+    cout << endl << "Массив B" << endl;
+    PrintArr(B, n, m);
+    cout << endl << "Массив C" << endl;
+    PrintArr(C, n, m);
+
+    //Общие значения массивов A, B и C
+    arr arr1 = CommonElements(n, m, A, B);
+    int index1 = arr1.index;
+    int* buf1;
+    buf1 = new int[n * n];
+    buf1 = arr1.buf;
+
+    arr arr2 = CommonElements(n, m, C, B);
+    int index2 = arr2.index;
+    int* buf2;
+    buf2 = new int[n * n];
+    buf2 = arr2.buf;
+
+    arr arr3 = RemovingDuplicates(index1, buf1);
+    arr arr4 = RemovingDuplicates(index2, buf2);
+    cout << endl << endl << "Общие значения массивов A, B и C" << endl << endl;
+    FinalArr1(arr3.index, arr4.index, arr3.buf, arr4.buf);
+
+    //Уникальные значения массивов A, B и C
+    arr uniqueArr1 = UniqueElements(n, m, A, B);
+    int uniqueIndex1 = uniqueArr1.index;
+    int* uniqueBuf1;
+    uniqueBuf1 = new int[n * n];
+    uniqueBuf1 = uniqueArr1.buf;
+
+    arr uniqueArr2 = UniqueElements(n, m, C, B);
+    int uniqueIndex2 = uniqueArr2.index;
+    int* uniqueBuf2;
+    uniqueBuf2 = new int[n * n];
+    uniqueBuf2 = uniqueArr2.buf;
+
+    arr uniqueArr3 = RemovingDuplicates(uniqueIndex1, uniqueBuf1);
+    arr uniqueArr4 = RemovingDuplicates(uniqueIndex2, uniqueBuf2);
+    cout << endl << endl << "Уникальные значения массивов A, B и C" << endl << endl;
+    FinalArr2(uniqueArr3.index, uniqueArr4.index, uniqueArr3.buf, uniqueArr4.buf);
+
+    //Общие значения массивов A и C
+    arr arr5 = CommonElements(n, m, C, A);
+    int index5 = arr5.index;
+    int* buf5;
+    buf5 = new int[n * n];
+    buf5 = arr5.buf;
+    arr arr6 = RemovingDuplicates(index5, buf5);
+    cout << endl << endl << "Общие значения массивов A и C" << endl << endl;
+    for (int i{}; i < arr6.index; i++) {
+        cout << arr6.buf[i] << " ";
+    }
+
+    //Отрицательные значения массивов A, B и C
+    NegativeElements(A, B, C, n, m);
+
+    DeleteArr(A, n);
+    DeleteArr(B, n);
+    DeleteArr(C, n);
+}
+
+void Students() {
+    string str1, str2, str3, str4, str5;
+    cout << "Введите первого студента: ";
+    getline(cin, str1);
+    cout << "Введите второго студента: ";
+    getline(cin, str2);
+    cout << "Введите третьего студента: ";
+    getline(cin, str3);
+    cout << "Введите четвертого студента: ";
+    getline(cin, str4);
+    cout << "Введите пятого студента: ";
+    getline(cin, str5);
+    int len1 = str1.length();
+    int len2 = str2.length();
+    int len3 = str3.length();
+    int len4 = str4.length();
+    int len5 = str5.length();
+    int arr[5]{ len1, len2, len3, len4, len5 };
+    int arr1[5]{ len1, len2, len3, len4, len5 };
+    string arr2[5]{ str1, str2, str3, str4, str5 };
+    sort(arr1, arr1 + 5);
+    cout << endl;
+    for (int i{}; i < 5; i++) {
+        for (int j{}; j < 5;j++) {
+            if (arr1[i] == arr[j]) cout << arr2[j] << endl;
+        }
+    }
+}
+
+void PrintArr(int* ptr[], int n, int m)
+{
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            cout << ptr[i][j] << "\t";
+        }
+        cout << endl;
+    }
+}
+
+void DeleteArr(int* ptr[], int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        delete[]ptr[i];
+
+    }
+    delete[]ptr;
+}
+
+bool ValueArr(int* ptr[], int n, int m, int k)
+{
+    int i;
+    for (i = 0;i < n;i++)
+        for (int j = 0; j < m; j++)
+        {
+            if (ptr[i][j] == k) return 1;
+
+        }
+    if (i == n) return 0;
+}
+
+bool ValueArr1(int* ptr, int n, int k)
+{
+    int j = 0;
+    for (j = 0; j < n; j++)
+    {
+        if (ptr[j] == k) return 1;
+
+    }
+    if (j == n)  return 0;
+}
+
+arr CommonElements(int n, int m, int** A, int** B) {
+    int* buf1;
+    buf1 = new int[n * n];
+    int index1 = 0;
+    for (int i = 0;i < n;i++) {
+        for (int j = 0; j < m; j++)
+        {
+            if (ValueArr(B, n, m, A[i][j]) == 1) {
+                buf1[index1] = A[i][j];
+                index1++;
+            }
+        }
+    }
+    return { index1, buf1 };
+}
+
+arr UniqueElements(int n, int m, int** A, int** B) {
+    int* buf1;
+    buf1 = new int[n * n];
+    int index1 = 0;
+    for (int i = 0;i < n;i++) {
+        for (int j = 0; j < m; j++)
+        {
+            if (ValueArr(B, n, m, A[i][j]) == 0) {
+                buf1[index1] = A[i][j];
+                index1++;
+            }
+        }
+    }
+    return { index1, buf1 };
+}
+
+arr RemovingDuplicates(int index, int* buf) {
+    int index1{};
+    int* buf1;
+    buf1 = new int[index];
+    for (int i = 0; i < index; i++)
+    {
+        if (ValueArr1(buf1, index, buf[i]) == 0) {
+            buf1[index1] = buf[i];
+            index1++;
+        }
+    }
+    return { index1, buf1 };
+}
+
+void FinalArr1(int index1, int index2, int* buf1, int* buf2) {
+    int common = 0;
+    int index;
+    index1 > index2 ? index = index1 : index = index2;
+    int* commonArr;
+    commonArr = new int[index];
+    for (int i = 0; i < index; i++)
+    {
+        for (int j{}; j < index; j++) {
+            if (buf1[i] == buf2[j]) {
+                commonArr[common] = buf1[i];
+                cout << commonArr[common] << " ";
+                common++;
+            }
+        }
+    }
+}
+
+void FinalArr2(int index1, int index2, int* buf1, int* buf2) {
+    int unique = 0;
+    int mean;
+    index1 > index2 ? mean = index1 : mean = index2;
+    int* uniqueArr;
+    uniqueArr = new int[mean];
+    for (int i = 0; i < mean; i++)
+    {
+        for (int j{}; j < mean; j++) {
+            if (buf1[i] != buf2[j]) {
+                uniqueArr[unique] = buf1[i];
+                unique++;
+            }
+        }
+    }
+    arr UniqueArr = RemovingDuplicates(unique, uniqueArr);
+    for (int i{}; i < UniqueArr.index; i++) {
+        cout << UniqueArr.buf[i] << " ";
+    }
+}
+
+void NegativeElements(int** A, int** B, int** C, int n, int m) {
+
+    int index = 0;
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (A[i][j] < 0) {
+                index++;
+            }
+        }
+    }
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (B[i][j] < 0) {
+                index++;
+            }
+        }
+    }
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (C[i][j] < 0) {
+                index++;
+            }
+        }
+    }
+
+    int* buf = new int[index];
+    int index = 0;
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (A[i][j] < 0) {
+                buf[index++] = A[i][j];
+            }
+        }
+    }
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (B[i][j] < 0) {
+                buf[index++] = B[i][j];
+            }
+        }
+    }
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (C[i][j] < 0) {
+                buf[index++] = C[i][j];
+            }
+        }
+    }
+    arr NegativeArr = RemovingDuplicates(index, buf);
+    cout << endl << endl << " Отрицательные значения массивов A, B и C" << endl << endl;
+    for (int i{}; i < NegativeArr.index; i++) {
+        cout << NegativeArr.buf[i] << " ";
+    }
+}

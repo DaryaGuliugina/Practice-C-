@@ -1,0 +1,172 @@
+#include <iostream>
+using namespace std;
+
+int counter{};
+
+const int n{ 5 }, m{ 5 };
+
+//task1
+void Matrix(int matrix[][m], int n, int m);
+void Matrix(int matrix[][m]);
+void Matrix(int matrix[][m], int n);
+void Matrix(int matrix[][m], int n, int m, int k);
+
+//task2 
+int Max(int num1, int num2);
+
+//task3
+int Cows(int botArr[], int userArr[]);
+int Bulls(int botArr[], int userArr[]);
+void Game(int botArr[], int userArr[], int botNumber, int userNumber);
+
+int main()
+{
+    setlocale(LC_ALL, "");
+
+    srand(time(NULL));
+
+    int k{};
+    int matrix[n][m]{};
+
+    Matrix(matrix, n, m); // инициализация
+    cout << "Первоначальная матрица: " << endl;
+    Matrix(matrix); // вывод
+    cout << endl;
+    Matrix(matrix, n); // миксимум и минимум
+    cout << endl << "Отсортированная матрица: " << endl;;
+    Matrix(matrix, n, m, k); // сортировка
+    Matrix(matrix);
+
+    int num1{ }, num2{ };
+    cout << "Введите первое число: ";
+    cin >> num1;
+    cout << "Введите второе число: ";
+    cin >> num2;
+    int max = Max(num1, num2);
+    cout << "Наибольший общий делитель: " << max;
+
+    int botNumber{ }, userNumber{ };
+    int botArr[4]{}, userArr[4]{};
+    botNumber = rand() % 9000 + 1000;
+
+    Game(botArr, userArr, botNumber, userNumber);  
+}
+
+void Matrix(int matrix[][m], int n, int m) {
+    for (int i{}; i < n; i++) {
+        for (int j{}; j < m; j++) {
+            matrix[i][j] = rand() % 30;
+        }
+    }
+}
+
+void Matrix(int matrix[][m]) {
+    for (int i{}; i < n; i++) {
+        for (int j{}; j < m; j++) {
+            cout << matrix[i][j] << "\t";
+        }
+        cout << endl;
+    }
+}
+
+void Matrix(int matrix[][m], int n) {
+    int max = matrix[0][0], min = matrix[0][0];
+    for (int i{}; i < n; i++) {
+        for (int j{}; j < m; j++) {
+            if (i == j) {
+                if (matrix[i][j] > max) max = matrix[i][j];
+                if (matrix[i][j] < min) min = matrix[i][j];
+            }
+        }
+    }
+    cout << "Максимальный элемент на главной диагонали матрицы: " << max << endl;
+    cout << "Минимальный элемент на главной диагонали матрицы: " << min << endl;
+}
+
+void Matrix(int matrix[][m], int n, int m, int k) {
+    for (int i = 0;i <= (n * m);i++)
+    {
+        for (int i = 0;i < n;i++)
+        {
+            for (int j = 0;j < m - 1;j++)
+            {
+                if (matrix[i][j] > matrix[i][j + 1]) swap(matrix[i][j], matrix[i][j + 1]);
+            }
+        }
+    }
+}
+
+int Max(int num1, int num2) {
+    if (num1 > num2) {
+        int x = num1;
+        num1 = num2;
+        num2 = x;
+    }
+    static int max = num2;
+    if (num1 % num2 == 0 && max % num2 == 0) {
+        return num2;
+    }
+    else {
+        Max(num1, num2 - 1);
+    }
+}
+
+int Cows(int botArr[], int userArr[]) {
+    int cows{};
+    for (int i{}; i < 4; i++) {
+        if (botArr[i] == userArr[i]) cows++;
+    }
+    return cows;
+}
+
+int Bulls(int botArr[], int userArr[]) {
+    int bulls{};
+    for (int i{}; i < 4; i++) {
+        for (int j{}; j < 4; j++) {
+            if (botArr[i] == userArr[j]) bulls++;
+
+        }
+    }
+    return bulls;
+}
+
+void Game(int botArr[], int userArr[], int botNumber, int userNumber) {
+    cout << endl << "Введите число: ";
+    cin >> userNumber;
+    counter++;
+    if (userNumber != botNumber) {
+        int a1 = botNumber / 1000;
+        int b1 = (botNumber / 100) % 10;
+        int c1 = (botNumber / 10) % 100 % 10;
+        int d1 = botNumber % 1000 % 100 % 10;
+
+        int a2 = userNumber / 1000;
+        int b2 = (userNumber / 100) % 10;
+        int c2 = (userNumber / 10) % 100 % 10;
+        int d2 = userNumber % 1000 % 100 % 10;
+
+        botArr[0] = a1;
+        botArr[1] = b1;
+        botArr[2] = c1;
+        botArr[3] = d1;
+
+        userArr[0] = a2;
+        userArr[1] = b2;
+        userArr[2] = c2;
+        userArr[3] = d2;
+
+        int bull = Bulls(botArr, userArr);
+
+        cout << endl << "Быки: " << bull;
+
+        int cow = Cows(botArr, userArr);
+
+        cout << endl << "Коровы: " << cow << endl;
+
+        Game(botArr, userArr, botNumber, userNumber);
+    }
+    else {
+        cout << endl << "Число угадано!" << endl;
+        cout << endl << "Количество попыток: " << counter;
+    }
+}

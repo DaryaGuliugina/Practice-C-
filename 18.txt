@@ -1,0 +1,865 @@
+#include <iostream>
+#include <windows.h>
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    srand(time(NULL));
+
+    /*
+    ЗАДАНИЕ 1
+    Написать программу, которая выводит на экран линию заданным символом, вертикальную или горизонтальную, 
+    причем линия может выводиться быстро, нормально и медленно.
+    Общение с пользователем организовать через меню.
+    */
+    
+    int number{}, line_type{}, speed{}, speed_value{}, exit_of_cycle{ 0 }; // Задача 1
+    char symbol = '*'; // Задача 1
+
+    while (exit_of_cycle == 0)
+
+    {
+        cout << "\nТип линии: \n1 - Вертикальная линия \n2 - Горизонтальная линия \n0 - Выход из программы \n";
+        cout << "Введите тип линии: ";
+        cin >> line_type;
+        cout << "Введите число символов: ";
+        cin >> number;
+        cout << "Введите символ: ";
+        cin >> symbol;
+        cout << "Введите значение скорости прорисовки линии (1 - быстро, 2 - нормально, 3 - медленно): ";
+        cin >> speed;
+        cout << endl;
+        //Скорость 
+            switch (speed)
+            {
+            case 1:
+                speed_value = 0;
+                break;
+            case 2:
+                speed_value = 1000;
+                break;
+            case 3:
+                speed_value = 2000;
+                break;
+            default:
+                cout << "Значение скорости введено некорректно!\n";
+                break;
+            }
+            //Тип линии 
+            switch (line_type)
+            {
+            case 0:
+                exit_of_cycle = 5;
+                break;
+            case 1:
+                for (number; number != 0; number--) {
+                    Sleep(speed_value); cout << symbol << "\n";
+                }
+                break;
+            case 2:
+                for (number; number != 0; number--) {
+                    Sleep(speed_value); cout << symbol;
+                }
+                break;
+            default:
+                cout << "Такого типа линии не существует!\n";
+                break;
+            }
+        }
+    
+
+    /*
+    ЗАДАНИЕ 2
+    Написать игру «Кубики». Пользователь и компьютер по очереди бросают 2 кубика. 
+    Победитель — тот, у кого по результатам трех бросков сумма больше. Предусмотреть красивый
+    интерфейс игры.
+    */
+    int u_choise{}, dice1{}, dice2{}, player_point{}, computer_point{};
+
+    
+        do {
+        cout << "\nВыберите пункт меню " << endl;
+        cout << "1 - Бросить кости" << endl;
+        cout << "0 - Выйти из игры" << endl;
+        cin >> u_choise;
+
+        switch (u_choise) {
+        case 1:
+            do {
+                cout << "Бросок игрока..." << endl;
+                Sleep(1000);
+                dice1 = rand() % 5 + 1;
+                cout << "Результат игрока: " << dice1 << endl;
+
+                cout << endl;
+
+                switch (dice1)
+                {
+                case 1:
+                    // 1
+                    for (int i{};i < 7;i++) {
+                        for (int j{};j < 11;j++) {
+                            (i == 3 && j == 5) ? cout << " " : cout << "%";
+                        }
+                        cout << endl;
+                    }
+                    cout << endl;
+                    break;
+                case 2:
+                    // 2
+                    for (int i{};i < 7;i++) {
+                        for (int j{};j < 11;j++) {
+                            ((i == 1 && j == 8) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                        }
+                        cout << endl;
+                    }
+                    cout << endl;
+                    break;
+                case 3:
+                    // 3
+                    for (int i{};i < 7;i++) {
+                        for (int j{};j < 11;j++) {
+                            ((i == 1 && j == 8) || (i == 3 && j == 5) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                        }
+                        cout << endl;
+                    }
+                    cout << endl;
+                    break;
+                case 4:
+                    // 4
+                    for (int i{};i < 7;i++) {
+                        for (int j{};j < 11;j++) {
+                            ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                        }
+                        cout << endl;
+                    }
+                    cout << endl;
+                    break;
+                case 5:
+                    // 5
+                    for (int i{};i < 7;i++) {
+                        for (int j{};j < 11;j++) {
+                            ((i == 3 && j == 5) || (i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                        }
+                        cout << endl;
+                    }
+                    cout << endl;
+                    break;
+                case 6:
+                    // 6
+                    for (int i{};i < 7;i++) {
+                        for (int j{};j < 11;j++) {
+                            ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8) || (i == 3 && j == 2) || (i == 3 && j == 8)) ? cout << " " : cout << "%";
+                        }
+                        cout << endl;
+                    }
+                    cout << endl;
+                    break;
+                default:
+                    break;
+                }
+
+                cout << "Бросок компьютера..." << endl;
+                Sleep(1000);
+                dice2 = rand() % 5 + 1;
+                cout << "Результат компьютера: " << dice2 << endl;
+
+                cout << endl;
+
+                switch (dice2)
+                {
+                case 1:
+                    // 1
+                    for (int i{};i < 7;i++) {
+                        for (int j{};j < 11;j++) {
+                            (i == 3 && j == 5) ? cout << " " : cout << "%";
+                        }
+                        cout << endl;
+                    }
+                    cout << endl;
+                    break;
+                case 2:
+                    // 2
+                    for (int i{};i < 7;i++) {
+                        for (int j{};j < 11;j++) {
+                            ((i == 1 && j == 8) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                        }
+                        cout << endl;
+                    }
+                    cout << endl;
+                    break;
+                case 3:
+                    // 3
+                    for (int i{};i < 7;i++) {
+                        for (int j{};j < 11;j++) {
+                            ((i == 1 && j == 8) || (i == 3 && j == 5) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                        }
+                        cout << endl;
+                    }
+                    cout << endl;
+                    break;
+                case 4:
+                    // 4
+                    for (int i{};i < 7;i++) {
+                        for (int j{};j < 11;j++) {
+                            ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                        }
+                        cout << endl;
+                    }
+                    cout << endl;
+                    break;
+                case 5:
+                    // 5
+                    for (int i{};i < 7;i++) {
+                        for (int j{};j < 11;j++) {
+                            ((i == 3 && j == 5) || (i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                        }
+                        cout << endl;
+                    }
+                    cout << endl;
+                    break;
+                case 6:
+                    // 6
+                    for (int i{};i < 7;i++) {
+                        for (int j{};j < 11;j++) {
+                            ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8) || (i == 3 && j == 2) || (i == 3 && j == 8)) ? cout << " " : cout << "%";
+                        }
+                        cout << endl;
+                    }
+                    cout << endl;
+                    break;
+                default:
+                    break;
+                }
+
+                if (dice1 == dice2) {
+                    cout << "Ничья. Попробуйте снова." << endl;
+                }
+            } while (dice1 == dice2);
+
+            if (dice1 > dice2) {
+                cout << "Первый ход - игрок" << endl;
+
+                for (int i{ 0 }; i < 3;i++) {
+
+                    cout << "\nРаунд - " << i + 1 << endl;
+
+                    do
+                    {
+                        cout << "Нажмите 1 для броска кубика: ";
+                        cin >> u_choise;
+                    } while (u_choise != 1);
+
+                    cout << "Игрок бросает кубики..." << endl;
+                    Sleep(1000);
+                    dice1 = rand() % 5 + 1;
+                    dice2 = rand() % 5 + 1;
+                    player_point = player_point + dice1 + dice2;
+                    cout << "Результат  игрока: " << dice1 << " - " << dice2 << endl << endl;
+                    switch (dice1)
+                    {
+                    case 1:
+                        // 1
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                (i == 3 && j == 5) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 2:
+                        // 2
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 8) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 3:
+                        // 3
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 8) || (i == 3 && j == 5) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 4:
+                        // 4
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 5:
+                        // 5
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 3 && j == 5) || (i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 6:
+                        // 6
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8) || (i == 3 && j == 2) || (i == 3 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    default:
+                        break;
+                    }
+                    switch (dice2)
+                    {
+                    case 1:
+                        // 1
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                (i == 3 && j == 5) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 2:
+                        // 2
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 8) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 3:
+                        // 3
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 8) || (i == 3 && j == 5) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 4:
+                        // 4
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 5:
+                        // 5
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 3 && j == 5) || (i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 6:
+                        // 6
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8) || (i == 3 && j == 2) || (i == 3 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    default:
+                        break;
+                    }
+                    Sleep(1000);
+
+                    cout << "Компьютер бросает кубики..." << endl;
+                    Sleep(1000);
+                    dice1 = rand() % 5 + 1;
+                    dice2 = rand() % 5 + 1;
+                    computer_point = computer_point + dice1 + dice2;
+                    cout << "Результат  компьютера: " << dice1 << " - " << dice2 << endl << endl;
+
+                    switch (dice1)
+                    {
+                    case 1:
+                        // 1
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                (i == 3 && j == 5) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 2:
+                        // 2
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 8) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 3:
+                        // 3
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 8) || (i == 3 && j == 5) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 4:
+                        // 4
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 5:
+                        // 5
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 3 && j == 5) || (i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 6:
+                        // 6
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8) || (i == 3 && j == 2) || (i == 3 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    default:
+                        break;
+                    }
+                    switch (dice2)
+                    {
+                    case 1:
+                        // 1
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                (i == 3 && j == 5) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 2:
+                        // 2
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 8) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 3:
+                        // 3
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 8) || (i == 3 && j == 5) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 4:
+                        // 4
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 5:
+                        // 5
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 3 && j == 5) || (i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 6:
+                        // 6
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8) || (i == 3 && j == 2) || (i == 3 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    default:
+                        break;
+                    }
+
+                    cout << "\nРезультат " << i + 1 << " раунда" << endl;
+                    cout << "Очки игрока - " << player_point << endl;
+                    cout << "Очки компьютера - " << computer_point << endl;
+                    Sleep(1000);
+                }
+            }
+            else {
+                cout << "Первый ход - компьютер" << endl;
+
+                for (int i{ 0 }; i < 3;i++) {
+
+                    cout << "\nРаунд - " << i + 1 << endl;
+
+                    cout << "Компьютер бросает кубики..." << endl;
+                    Sleep(1000);
+                    dice1 = rand() % 5 + 1;
+                    dice2 = rand() % 5 + 1;
+                    computer_point = computer_point + dice1 + dice2;
+                    cout << "Результат  компьютера: " << dice1 << " - " << dice2 << endl << endl;
+
+                    switch (dice1)
+                    {
+                    case 1:
+                        // 1
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                (i == 3 && j == 5) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 2:
+                        // 2
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 8) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 3:
+                        // 3
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 8) || (i == 3 && j == 5) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 4:
+                        // 4
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 5:
+                        // 5
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 3 && j == 5) || (i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 6:
+                        // 6
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8) || (i == 3 && j == 2) || (i == 3 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    default:
+                        break;
+                    }
+                    switch (dice2)
+                    {
+                    case 1:
+                        // 1
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                (i == 3 && j == 5) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 2:
+                        // 2
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 8) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 3:
+                        // 3
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 8) || (i == 3 && j == 5) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 4:
+                        // 4
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 5:
+                        // 5
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 3 && j == 5) || (i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 6:
+                        // 6
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8) || (i == 3 && j == 2) || (i == 3 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    default:
+                        break;
+                    }
+
+                    do
+                    {
+                        cout << "Нажмите 1 для броска кубика: ";
+                        cin >> u_choise;
+                    } while (u_choise != 1);
+
+                    Sleep(1000);
+
+                    cout << "Игрок бросает кубики..." << endl;
+                    Sleep(1000);
+                    dice1 = rand() % 5 + 1;
+                    dice2 = rand() % 5 + 1;
+                    player_point = player_point + dice1 + dice2;
+                    cout << "Результат  игрока: " << dice1 << " - " << dice2 << endl << endl;
+
+                    switch (dice1)
+                    {
+                    case 1:
+                        // 1
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                (i == 3 && j == 5) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 2:
+                        // 2
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 8) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 3:
+                        // 3
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 8) || (i == 3 && j == 5) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 4:
+                        // 4
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 5:
+                        // 5
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 3 && j == 5) || (i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 6:
+                        // 6
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8) || (i == 3 && j == 2) || (i == 3 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    default:
+                        break;
+                    }
+                    switch (dice2)
+                    {
+                    case 1:
+                        // 1
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                (i == 3 && j == 5) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 2:
+                        // 2
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 8) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 3:
+                        // 3
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 8) || (i == 3 && j == 5) || (i == 5 && j == 2)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 4:
+                        // 4
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 5:
+                        // 5
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 3 && j == 5) || (i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 6:
+                        // 6
+                        for (int i{};i < 7;i++) {
+                            for (int j{};j < 11;j++) {
+                                ((i == 1 && j == 2) || (i == 1 && j == 8) || (i == 5 && j == 2) || (i == 5 && j == 8) || (i == 3 && j == 2) || (i == 3 && j == 8)) ? cout << " " : cout << "%";
+                            }
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    default:
+                        break;
+                    }
+
+                    Sleep(1000);
+
+                    cout << "\nРезультат " << i + 1 << " раунда" << endl;
+                    cout << "Очки компьютера - " << computer_point << endl;
+                    cout << "Очки игрока - " << player_point << endl;
+                    Sleep(1000);
+                }
+            }
+            cout << "\nРезультаты: " << endl;
+            cout << "Очки игрока - " << player_point << endl;
+            cout << "Очки компьютера - " << computer_point << endl;
+
+            if (player_point > computer_point) {
+                cout << "\nПобеда за игроком!" << endl;
+            }
+            else {
+                if (computer_point > player_point) {
+                    cout << "\nПобеда за компьютером!" << endl;
+                }
+                else {
+                    cout << "Ничья!" << endl;
+                }
+            }
+            break;
+        case 0:
+            cout << "Выход" << endl;
+            break;
+        default:
+            cout << "Ошибка!" << endl;
+            break;
+        }
+    } while (u_choise!=0);
+    
+
+
+
+
+
+

@@ -1,0 +1,48 @@
+#include <iostream>
+#include <string>
+#include <windows.h>
+#include <algorithm>
+using namespace std;
+
+void deleteChar(string& str, int n) {
+    for (int i = n - 1; i < str.size(); i++) {
+        str[i] = str[i + 1];
+    }
+}
+
+void deleteAllChar(string& str, char ch) {
+    str.erase(remove(str.begin(), str.end(), ch), str.end());
+}
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    /*
+    Задание 1. 
+    Написать функцию, которая удаляет из строки
+    символ с заданным номером.
+    */
+    int num{};
+    string str;
+    cout << "Введите строку: ";
+    cin >> str;
+    cout << "Введите номер символа, который хотите удалить: ";
+    cin >> num;
+    deleteChar(str, num);
+    cout << "Строка с удаленным символом: " << str;
+    /*
+    Задание 2. Написать функцию, которая удаляет из строки
+    все вхождения в нее заданного символа.
+    */
+    string str1;
+    char ch;
+    cout << "Введите строку: ";
+    getline(cin, str1);
+    cout << "Введите символ, который хотите удалить: ";
+    cin >> ch;
+    deleteAllChar(str1, ch);
+    cout << str1;
+}
+

@@ -1,0 +1,207 @@
+#include <iostream>
+#include <windows.h>
+#include <conio.h>
+using namespace std;
+/*
+Создать имитацию игры «однорукий бандит». Например, при нажатии кнопки «Enter» происходит «вращение»
+трех барабанов (естественно, количество вращений каждого из них выбирается случайно), 
+на которых изображены разные значки; и если выпадает определенная комбинация, то игрок получает какой-то выигрыш.
+*/
+
+int score{ 100 };
+class Game {
+private:
+	const int size{ 5 };
+	int k{}, m{}, n{}, l{}, a{}, b{}, c{}, d{};
+	char symbolsOnReel[5]{ '\x03','\x04','\x05','\x06','7' };
+	int ch{};
+public:
+	void Begin();
+	void Image1();
+	void Image2();
+	void Image3();
+	void Image4();
+	void Animation(int);
+	void GamePlay();
+	void Result();
+};
+
+int main()
+{
+	srand(time(0));
+	system("mode con cols=50 lines=25");
+	while (true)
+	{
+		Game game;
+		game.GamePlay();
+	}
+}
+
+void Game::Begin()
+{
+	while (ch != 13)
+	{
+		system("cls");
+		cout << "\n\t\t  score: " << score << endl;
+		Image1();
+		cout << "\n\n\t\tPress Enter...";
+		ch = _getch();
+		if (ch == 224) ch == _getch();
+		switch (ch)
+		{
+		case 13:
+			Sleep(1000);
+			system("cls");
+			break;
+		default:
+			cout << "\n\n\t\tError\n";
+			Sleep(1000);
+			system("cls");
+			break;
+		}
+	}
+}
+
+void Game::Image1()
+{
+	cout << "\n\n\n\n";
+	cout << "\t\t" << " -----------   -" << endl;
+	cout << "\t\t" << "|  -------  | |" << endl;
+	cout << "\t\t" << "| | \x06 \x06 \x06 | | |" << endl;
+	cout << "\t\t" << "| | 7 7 7 | |-" << endl;
+	cout << "\t\t" << "| | \x03 \x03 \x03 | |" << endl;
+	cout << "\t\t" << "|  -------  |" << endl;
+	cout << "\t\t" << " -----------" << endl;
+}
+
+void Game::Image2()
+{
+	cout << "\n\n\n\n";
+	cout << "\t\t" << " -----------" << endl;
+	cout << "\t\t" << "|  -------  |  -" << endl;
+	cout << "\t\t" << "| | \x06 \x06 \x06 | | |" << endl;
+	cout << "\t\t" << "| | 7 7 7 | |-" << endl;
+	cout << "\t\t" << "| | \x03 \x03 \x03 | |" << endl;
+	cout << "\t\t" << "|  -------  |" << endl;
+	cout << "\t\t" << " -----------" << endl;
+}
+
+void Game::Image3()
+{
+	cout << "\n\n\n\n";
+	cout << "\t\t" << " -----------" << endl;
+	cout << "\t\t" << "|  -------  |" << endl;
+	cout << "\t\t" << "| | \x06 \x06 \x06 | | -" << endl;
+	cout << "\t\t" << "| | 7 7 7 | |-" << endl;
+	cout << "\t\t" << "| | \x03 \x03 \x03 | |" << endl;
+	cout << "\t\t" << "|  -------  |" << endl;
+	cout << "\t\t" << " -----------" << endl;
+}
+
+void Game::Image4()
+{
+	cout << "\n\n\n\n";
+	cout << "\t\t" << " -----------" << endl;
+	cout << "\t\t" << "|  -------  |" << endl;
+	cout << "\t\t" << "| | \x06 \x06 \x06 | |" << endl;
+	cout << "\t\t" << "| | 7 7 7 | |--" << endl;
+	cout << "\t\t" << "| | \x03 \x03 \x03 | |" << endl;
+	cout << "\t\t" << "|  -------  |" << endl;
+	cout << "\t\t" << " -----------" << endl;
+}
+
+void Game::Animation(int score)
+{
+	system("cls");
+	cout << "\n\t\t  score: " << score << endl;
+	Image1();
+	Sleep(150);
+	system("cls");
+	cout << "\n\t\t  score: " << score << endl;
+	Image2();
+	Sleep(150);
+	system("cls");
+	cout << "\n\t\t  score: " << score << endl;
+	Image3();
+	Sleep(150);
+	system("cls");
+	cout << "\n\t\t  score: " << score << endl;
+	Image4();
+	Sleep(150);
+	system("cls");
+	cout << "\n\t\t  score: " << score << endl;
+	Image3();
+	Sleep(150);
+	system("cls");
+	cout << "\n\t\t  score: " << score << endl;
+	Image2();
+	Sleep(150);
+	system("cls");
+	cout << "\n\t\t  score: " << score << endl;
+	Image1();
+}
+
+void Game::Result()
+{
+	if (symbolsOnReel[k] == symbolsOnReel[m] && symbolsOnReel[k] == symbolsOnReel[n]) {
+		if (symbolsOnReel[k] == '\x03') score += 100;
+		else if (symbolsOnReel[k] == '\x04') score += 200;
+		else if (symbolsOnReel[k] == '\x05') score += 300;
+		else if (symbolsOnReel[k] == '\x06') score += 400;
+		else if (symbolsOnReel[k] == '7') {
+			cout << "\n\t\tJACKPOT\n";
+			score += 1000;
+		}
+	}
+}
+
+void Game::GamePlay()
+{
+	k = size - 1;
+	m = size - 1;
+	n = size - 1;
+	l = 0;
+	ch = 0;
+	Begin();
+	cout << "\t\t  score: " << score;
+	Animation(score);
+	system("cls");
+	a = 5 + rand() % 16;
+	b = 5 + rand() % 16;
+	c = 5 + rand() % 16;
+	score -= 5;
+	if (a > b && a > c) d = a;
+	else if (b > a && b > c) d = b;
+	else d = c;
+	while (l <= d) {
+		if (k < 0) k = size - 1;
+		if (m < 0) m = size - 1;
+		if (n < 0) n = size - 1;
+		cout << "\n\t\t  score: " << score << endl;
+		cout << "\n\n\n\n";
+		cout << "\t\t" << " -----------   -" << endl;
+		cout << "\t\t" << "|  -------  | |" << endl;
+		(k - 1 < 0) ? cout << "\t\t" << "| | " << symbolsOnReel[size - 1] << " " : cout << "\t\t" << "| | " << symbolsOnReel[k - 1] << " ";
+		(m - 1 < 0) ? cout << symbolsOnReel[size - 1] << " " : cout << symbolsOnReel[m - 1] << " ";
+		(n - 1 < 0) ? cout << symbolsOnReel[size - 1] << " | | |" << endl : cout << symbolsOnReel[n - 1] << " | | |" << endl;
+		cout << "\t\t" << "| | " << symbolsOnReel[k] << " " << symbolsOnReel[m] << " " << symbolsOnReel[n] << " | |-" << endl;
+		(k + 1 >= size) ? cout << "\t\t" << "| | " << symbolsOnReel[0] << " " : cout << "\t\t" << "| | " << symbolsOnReel[k + 1] << " ";
+		(m + 1 >= size) ? cout << symbolsOnReel[0] << " " : cout << symbolsOnReel[m + 1] << " ";
+		(n + 1 >= size) ? cout << symbolsOnReel[0] << " | |" << endl : cout << symbolsOnReel[n + 1] << " | |" << endl;
+		cout << "\t\t" << "|  -------  |" << endl;
+		cout << "\t\t" << " -----------" << endl;
+		cout << endl;
+		if (l < d) {
+			Sleep(100);
+			system("cls");
+		}
+		if (l < a) k--;
+		if (l < b) m--;
+		if (l < c) n--;
+		l++;
+	}
+	Result();
+	cout << "\n\t\tPress Enter...";
+	Sleep(1500);
+	if (score == 0) exit(0);
+}
